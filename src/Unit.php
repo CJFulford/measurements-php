@@ -33,9 +33,9 @@ abstract class Unit
 
         $this->baseUnitsPer = $definition[self::DEF_BASE_UNITS_PER];
         $this->name         = $definition[self::DEF_NAME];
-        $this->pluralName   = $definition[self::DEF_PLURAL_NAME];
-        $this->symbol       = $definition[self::DEF_SYMBOL];
-        $this->acronym      = $definition[self::DEF_ACRONYM];
+        $this->pluralName   = $definition[self::DEF_PLURAL_NAME] ?? $this->name . 's';
+        $this->symbol       = $definition[self::DEF_SYMBOL] ?? '';
+        $this->acronym      = $definition[self::DEF_ACRONYM] ?? '';
     }
 
     abstract protected static function getUnitDefinitions(): array;

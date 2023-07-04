@@ -7,15 +7,30 @@ test('Invalid Length Creation', function () {
     new Length(1, 0);
 })->throws(Exception::class);
 
-test('Creation of a Length for each unit', function () {
-    $unitIds = [
-        LengthUnit::IN,
-        LengthUnit::FT,
-    ];
+$unitIds = [
+    // Imperial
+    LengthUnit::TWIP,
+    LengthUnit::THOU,
+    LengthUnit::BARLEYCORN,
+    LengthUnit::INCH,
+    LengthUnit::HAND,
+    LengthUnit::FOOT,
+    LengthUnit::YARD,
+    LengthUnit::CHAIN,
+    LengthUnit::FURLONG,
+    LengthUnit::MILE,
+    LengthUnit::LEAGUE,
+    LengthUnit::FATHOM,
+    LengthUnit::CABLE,
+    LengthUnit::NAUTICAL_MILE,
+];
 
-    $defaultValue = 10.0;
+$defaultValue = 10.0;
 
-    foreach ($unitIds as $unitId) {
+foreach ($unitIds as $unitId) {
+    $unit = new LengthUnit($unitId);
+
+    test('Creation of lengths for ' . $unit->getName(), function () use ($defaultValue, $unitId, $unit) {
         // create from ID
         $length = new Length($defaultValue, $unitId);
         expect($length)->toBeInstanceOf(Length::class);
@@ -27,5 +42,5 @@ test('Creation of a Length for each unit', function () {
 
         // after creation, getting the original value in the original units is
         expect($length->getValue($unit))->toBe($defaultValue);
-    }
-});
+    });
+}
