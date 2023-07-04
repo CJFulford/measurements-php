@@ -9,19 +9,22 @@ abstract class Measurement
     /** @var float Will always be in base units */
     protected float $value;
     private bool    $isMutable;
-    private string  $unitClassName;
+    private string  $unitClass;
 
-    protected function __construct(float $value, Unit $unit, bool $isMutable, string $unitClass)
+    protected function __construct(float $value, Unit|int $unit, bool $isMutable, string $unitClass)
     {
+        // get the unit object for the id
+        $unit = is_int($unit) ? new $unitClass($unit) : $unit;
+
         // always convert the value so the value is in the base units
-        $this->value         = $value * $unit->getBaseUnitsPer();
-        $this->isMutable     = $isMutable;
-        $this->unitClassName = $unitClass;
+        $this->value     = $value * $unit->getBaseUnitsPer();
+        $this->isMutable = $isMutable;
+        $this->unitClass = $unitClass;
     }
 
     final protected function checkUnitCompatibility(Unit $unit): void
     {
-        if (!is_subclass_of($unit, $this->unitClassName, false)) {
+        if (!($unit instanceof $this->unitClass)) {
             throw new Exception('Unit is incompatible with measurement');
         }
     }

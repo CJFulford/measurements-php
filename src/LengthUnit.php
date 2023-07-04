@@ -21,18 +21,18 @@ class LengthUnit extends Unit
     {
         return [
             self::IN => [
-                'name'       => 'Inch',
-                'pluralName' => 'Inches',
-                'inchesPer'  => 1,
-                'symbol'     => "'",
-                'acronym'    => 'in'
+                self::DEF_NAME           => 'Inch',
+                self::DEF_PLURAL_NAME    => 'Inches',
+                self::DEF_BASE_UNITS_PER => 1,
+                self::DEF_SYMBOL         => "'",
+                self::DEF_ACRONYM        => 'in'
             ],
             self::FT => [
-                'name'       => 'Foot',
-                'pluralName' => 'Feet',
-                'inchesPer'  => 12,
-                'symbol'     => '"',
-                'acronym'    => 'ft'
+                self::DEF_NAME           => 'Foot',
+                self::DEF_PLURAL_NAME    => 'Feet',
+                self::DEF_BASE_UNITS_PER => 12,
+                self::DEF_SYMBOL         => '"',
+                self::DEF_ACRONYM        => 'ft'
             ]
         ];
     }
