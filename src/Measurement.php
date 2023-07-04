@@ -124,4 +124,30 @@ abstract class Measurement
         // recurse on this function now that the argument is a Length
         return $this->add(new static($value, $unit));
     }
+
+    /**
+     * subtracts the provided length from this length
+     *
+     * @param Measurement|float $value if this value is a Length, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a Length
+     * @return $this
+     * @throws Exception
+     */
+    public function sub(Measurement|float $value, Unit|int|null $unit = null): self
+    {
+        // add the value of the incoming measurement to this object
+        if ($value instanceof static) {
+            $this->value -= $value->value;
+            return $this;
+        }
+
+        if ($unit === null) {
+            throw new Exception('No unit provided');
+        }
+
+        // ensure that $unit is a LengthUnit
+        $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
+        // recurse on this function now that the argument is a Length
+        return $this->sub(new static($value, $unit));
+    }
 }

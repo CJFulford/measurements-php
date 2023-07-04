@@ -79,4 +79,29 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
 
         expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
     });
+
+    test("{$unit->getName()} - Subtract 2 lengths", function () use ($unit, $precision) {
+        $value1      = getRandom($precision);
+        $value2      = getRandom($precision);
+        $resultValue = round($value1 - $value2, $precision);
+
+        $length1 = new Length($value1, $unit);
+        $length2 = new Length($value2, $unit);
+
+        $length1->sub($length2);
+
+        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+    });
+
+    test("{$unit->getName()} - Subtract length parameters", function () use ($unit, $precision) {
+        $value1      = getRandom($precision);
+        $value2      = getRandom($precision);
+        $resultValue = round($value1 - $value2, $precision);
+
+        $length1 = new Length($value1, $unit);
+
+        $length1->sub($value2, $unit);
+
+        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+    });
 }
