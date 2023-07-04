@@ -19,10 +19,27 @@ class LengthUnit extends Unit
     public const FATHOM        = 12;
     public const CABLE         = 13;
     public const NAUTICAL_MILE = 14;
+    // Metric
+    public const TERAMETRE  = 15;
+    public const GIGAMETRE  = 16;
+    public const MEGAMETRE  = 17;
+    public const KILOMETRE  = 18;
+    public const HECTOMETRE = 19;
+    public const DECAMETRE  = 20;
+    public const METRE      = 21;
+    public const DECIMETRE  = 22;
+    public const CENTIMETRE = 23;
+    public const MILLIMETRE = 24;
+    public const MICROMETRE = 25;
+    public const NANOMETRE  = 26;
+    public const PICOMETRE  = 27;
 
-    final protected static function getUnitDefinitions(): array
+    final public static function getUnitDefinitions(): array
     {
         return [
+            /*
+             * Imperial
+             */
             self::TWIP          => [
                 self::DEF_NAME           => 'twip',
                 self::DEF_BASE_UNITS_PER => 0.0000176389,
@@ -93,6 +110,74 @@ class LengthUnit extends Unit
                 self::DEF_NAME           => 'nautical mile',
                 self::DEF_BASE_UNITS_PER => 1852,
                 self::DEF_ACRONYM        => 'nmi'
+            ],
+            /*
+             * Metric
+             */
+            self::TERAMETRE     => [
+                self::DEF_NAME           => 'terametre',
+                self::DEF_SYMBOL         => 'mT',
+                self::DEF_BASE_UNITS_PER => 10e12
+            ],
+            self::GIGAMETRE     => [
+                self::DEF_NAME           => 'gigametre',
+                self::DEF_SYMBOL         => 'mG',
+                self::DEF_BASE_UNITS_PER => 10e9
+            ],
+            self::MEGAMETRE     => [
+                self::DEF_NAME           => 'megametre',
+                self::DEF_SYMBOL         => 'mM',
+                self::DEF_BASE_UNITS_PER => 10e6
+            ],
+            self::KILOMETRE     => [
+                self::DEF_NAME           => 'kilometre',
+                self::DEF_SYMBOL         => 'mk',
+                self::DEF_BASE_UNITS_PER => 10e3
+            ],
+            self::HECTOMETRE    => [
+                self::DEF_NAME           => 'hectometre',
+                self::DEF_SYMBOL         => 'mh',
+                self::DEF_BASE_UNITS_PER => 10e2
+            ],
+            self::DECAMETRE     => [
+                self::DEF_NAME           => 'decametre',
+                self::DEF_SYMBOL         => 'mda',
+                self::DEF_BASE_UNITS_PER => 10e1
+            ],
+            self::METRE         => [
+                self::DEF_NAME           => 'metre',
+                self::DEF_SYMBOL         => 'm',
+                self::DEF_BASE_UNITS_PER => 10e0
+            ],
+            self::DECIMETRE     => [
+                self::DEF_NAME           => 'decimetre',
+                self::DEF_SYMBOL         => 'md',
+                self::DEF_BASE_UNITS_PER => 10e-1
+            ],
+            self::CENTIMETRE    => [
+                self::DEF_NAME           => 'centimetre',
+                self::DEF_SYMBOL         => 'mc',
+                self::DEF_BASE_UNITS_PER => 10e-2
+            ],
+            self::MILLIMETRE    => [
+                self::DEF_NAME           => 'millimetre',
+                self::DEF_SYMBOL         => 'mm',
+                self::DEF_BASE_UNITS_PER => 10e-3
+            ],
+            self::MICROMETRE    => [
+                self::DEF_NAME           => 'micrometre',
+                self::DEF_SYMBOL         => 'mμ',
+                self::DEF_BASE_UNITS_PER => 10e-6
+            ],
+            self::NANOMETRE     => [
+                self::DEF_NAME           => 'nanometre',
+                self::DEF_SYMBOL         => 'mn',
+                self::DEF_BASE_UNITS_PER => 10e-9
+            ],
+            self::PICOMETRE     => [
+                self::DEF_NAME           => 'picometre',
+                self::DEF_SYMBOL         => 'mp',
+                self::DEF_BASE_UNITS_PER => 10e-12
             ],
         ];
     }
