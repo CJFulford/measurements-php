@@ -84,9 +84,9 @@ abstract class Measurement
     {
         // add the value of the incoming measurement to this object
         if ($value instanceof static) {
-            $thisValue = round($this->value, $precision);
-            $thatValue = round($value->value, $precision);
-            return $thisValue === $thatValue;
+            $difference = abs($this->value - $value->value);
+            $epsilon    = pow(10, -1 * $precision);
+            return $difference < $epsilon;
         }
 
         if ($unit === null) {
@@ -149,5 +149,18 @@ abstract class Measurement
         $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
         // recurse on this function now that the argument is a Length
         return $this->sub(new static($value, $unit));
+    }
+
+    /**
+     * multiplies the value of this measurement by the provided value
+     *
+     * @param float $value
+     * @return $this
+     * @throws Exception
+     */
+    public function mulByNumber(float $value): self
+    {
+        $this->value *= $value;
+        return $this;
     }
 }

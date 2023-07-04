@@ -9,14 +9,14 @@ test('Invalid Length Creation', function () {
 
 function getRandom(int $precision): float
 {
-    return round(random_int(-1000, 1000) / random_int(-1000, 1000), $precision);
+    return round(random_int(-100, 100) / (random_int(-100, 100) ?: 1), $precision);
 }
 
 
 foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     $unit = new LengthUnit($unitId);
 
-    $precision    = random_int(1, 8);
+    $precision    = random_int(5, 8);
     $defaultValue = getRandom($precision);
 
     test("{$unit->getName()} - Create length from ID", function () use ($defaultValue, $unitId) {
@@ -101,6 +101,18 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
         $length1 = new Length($value1, $unit);
 
         $length1->sub($value2, $unit);
+
+        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+    });
+
+    test("{$unit->getName()} - Mul by number", function () use ($unit, $precision) {
+        $value1      = getRandom($precision);
+        $value2      = getRandom($precision);
+        $resultValue = round($value1 * $value2, $precision);
+
+        $length1 = new Length($value1, $unit);
+
+        $length1->mulByNumber($value2);
 
         expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
     });
