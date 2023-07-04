@@ -7,17 +7,17 @@ test('Invalid Length Creation', function () {
     new Length(1, 0);
 })->throws(Exception::class);
 
-function getRandom(int $precision): float
+function getRandom(): float
 {
-    return round(random_int(-100, 100) / (random_int(-100, 100) ?: 1), $precision);
+    return random_int(-100, 100) / (random_int(-100, 100) ?: 1);
 }
 
 
 foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     $unit = new LengthUnit($unitId);
 
-    $precision    = random_int(5, 8);
-    $defaultValue = getRandom($precision);
+    $precision    = random_int(3, 10);
+    $defaultValue = getRandom();
 
     test("{$unit->getName()} - Create length from ID", function () use ($defaultValue, $unitId) {
         // create from ID
@@ -34,7 +34,7 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
         "{$unit->getName()} - Get original value in original units",
         function () use ($defaultValue, $unit, $precision) {
             $length = new Length($defaultValue, $unit);
-            expect($length->getValue($unit, $precision))->toBe(round($defaultValue, $precision));
+            expect(round($length->getValue($unit), $precision))->toBe(round($defaultValue, $precision));
         }
     );
 
@@ -56,9 +56,9 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     );
 
     test("{$unit->getName()} - Add 2 lengths", function () use ($unit, $precision) {
-        $value1      = getRandom($precision);
-        $value2      = getRandom($precision);
-        $resultValue = round($value1 + $value2, $precision);
+        $value1      = getRandom();
+        $value2      = getRandom();
+        $resultValue = $value1 + $value2;
 
         $length1 = new Length($value1, $unit);
         $length2 = new Length($value2, $unit);
@@ -68,35 +68,35 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
         expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
     });
 
-    test("{$unit->getName()} - Add length parameters", function () use ($unit, $precision) {
-        $value1      = getRandom($precision);
-        $value2      = getRandom($precision);
-        $resultValue = round($value1 + $value2, $precision);
+    test("{$unit->getName()} - Add length parameters", function () use ($unit) {
+        $value1      = getRandom();
+        $value2      = getRandom();
+        $resultValue = $value1 + $value2;
 
         $length1 = new Length($value1, $unit);
 
         $length1->add($value2, $unit);
 
-        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+        expect($length1->equals($resultValue, $unit))->toBeTrue();
     });
 
-    test("{$unit->getName()} - Subtract 2 lengths", function () use ($unit, $precision) {
-        $value1      = getRandom($precision);
-        $value2      = getRandom($precision);
-        $resultValue = round($value1 - $value2, $precision);
+    test("{$unit->getName()} - Subtract 2 lengths", function () use ($unit) {
+        $value1      = getRandom();
+        $value2      = getRandom();
+        $resultValue = $value1 - $value2;
 
         $length1 = new Length($value1, $unit);
         $length2 = new Length($value2, $unit);
 
         $length1->sub($length2);
 
-        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+        expect($length1->equals($resultValue, $unit))->toBeTrue();
     });
 
     test("{$unit->getName()} - Subtract length parameters", function () use ($unit, $precision) {
-        $value1      = getRandom($precision);
-        $value2      = getRandom($precision);
-        $resultValue = round($value1 - $value2, $precision);
+        $value1      = getRandom();
+        $value2      = getRandom();
+        $resultValue = $value1 - $value2;
 
         $length1 = new Length($value1, $unit);
 
@@ -106,13 +106,27 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Mul by number", function () use ($unit, $precision) {
-        $value1      = getRandom($precision);
-        $value2      = getRandom($precision);
-        $resultValue = round($value1 * $value2, $precision);
+        $value1      = getRandom();
+        $value2      = getRandom();
+        $resultValue = $value1 * $value2;
 
         $length1 = new Length($value1, $unit);
 
         $length1->mulByNumber($value2);
+
+        expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+    });
+
+    test("{$unit->getName()} - Div by number", function () use ($unit, $precision) {
+        $value1 = getRandom();
+        do {
+            $value2 = getRandom();
+        } while ($value2 === 0.0);
+        $resultValue = $value1 / $value2;
+
+        $length1 = new Length($value1, $unit);
+
+        $length1->divByNumber($value2);
 
         expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
     });

@@ -36,10 +36,10 @@ abstract class Measurement
      * @return float
      * @throws Exception
      */
-    final public function getValue(Unit $unit, $precision = 5): float
+    final public function getValue(Unit $unit): float
     {
         $this->checkUnitCompatibility($unit);
-        return round($this->value / $unit->getBaseUnitsPer(), $precision);
+        return $this->value / $unit->getBaseUnitsPer();
     }
 
     final public function isMutable(): bool
@@ -161,6 +161,19 @@ abstract class Measurement
     public function mulByNumber(float $value): self
     {
         $this->value *= $value;
+        return $this;
+    }
+
+    /**
+     * Divides the value of this measurement by the provided value. Provides no checks for division by 0
+     *
+     * @param float $value
+     * @return $this
+     * @throws Exception
+     */
+    public function divByNumber(float $value): self
+    {
+        $this->value /= $value;
         return $this;
     }
 }
