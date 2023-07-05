@@ -7,20 +7,21 @@ test('Invalid Length Creation', function () {
     new Length(1, 0);
 })->throws(Exception::class);
 
-function getRandom(): float
+
+$unitIds = array_keys(LengthUnit::getUnitDefinitions());
+
+function getRandomNumber(): float
 {
     return random_int(-100, 100) / (random_int(-100, 100) ?: 1);
 }
 
-
-foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
+foreach ($unitIds as $unitId) {
     $unit = new LengthUnit($unitId);
 
     $precision    = random_int(3, 10);
-    $defaultValue = getRandom();
+    $defaultValue = getRandomNumber();
 
     test("{$unit->getName()} - Create length from ID", function () use ($defaultValue, $unitId) {
-        // create from ID
         $length = new Length($defaultValue, $unitId);
         expect($length)->toBeInstanceOf(Length::class);
     });
@@ -56,24 +57,24 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     );
 
     test("{$unit->getName()} - error on immutable add", function () use ($unit) {
-        (new Length(getRandom(), $unit))->setImmutable()->add(0, $unit);
+        (new Length(getRandomNumber(), $unit))->setImmutable()->add(0, $unit);
     })->throws(Exception::class);
 
     test("{$unit->getName()} - error on immutable subtract", function () use ($unit) {
-        (new Length(getRandom(), $unit))->setImmutable()->sub(0, $unit);
+        (new Length(getRandomNumber(), $unit))->setImmutable()->sub(0, $unit);
     })->throws(Exception::class);
 
     test("{$unit->getName()} - error on immutable multiply", function () use ($unit) {
-        (new Length(getRandom(), $unit))->setImmutable()->mulByNumber(1);
+        (new Length(getRandomNumber(), $unit))->setImmutable()->mulByNumber(1);
     })->throws(Exception::class);
 
     test("{$unit->getName()} - error on immutable division", function () use ($unit) {
-        (new Length(getRandom(), $unit))->setImmutable()->divByNumber(1);
+        (new Length(getRandomNumber(), $unit))->setImmutable()->divByNumber(1);
     })->throws(Exception::class);
 
     test("{$unit->getName()} - Add 2 lengths", function () use ($unit, $precision) {
-        $value1      = getRandom();
-        $value2      = getRandom();
+        $value1      = getRandomNumber();
+        $value2      = getRandomNumber();
         $resultValue = $value1 + $value2;
 
         $length1 = new Length($value1, $unit);
@@ -85,8 +86,8 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Add length parameters", function () use ($unit) {
-        $value1      = getRandom();
-        $value2      = getRandom();
+        $value1      = getRandomNumber();
+        $value2      = getRandomNumber();
         $resultValue = $value1 + $value2;
 
         $length1 = new Length($value1, $unit);
@@ -97,8 +98,8 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Subtract 2 lengths", function () use ($unit) {
-        $value1      = getRandom();
-        $value2      = getRandom();
+        $value1      = getRandomNumber();
+        $value2      = getRandomNumber();
         $resultValue = $value1 - $value2;
 
         $length1 = new Length($value1, $unit);
@@ -110,8 +111,8 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Subtract length parameters", function () use ($unit, $precision) {
-        $value1      = getRandom();
-        $value2      = getRandom();
+        $value1      = getRandomNumber();
+        $value2      = getRandomNumber();
         $resultValue = $value1 - $value2;
 
         $length1 = new Length($value1, $unit);
@@ -122,8 +123,8 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Mul by number", function () use ($unit, $precision) {
-        $value1      = getRandom();
-        $value2      = getRandom();
+        $value1      = getRandomNumber();
+        $value2      = getRandomNumber();
         $resultValue = $value1 * $value2;
 
         $length1 = new Length($value1, $unit);
@@ -134,9 +135,9 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
     });
 
     test("{$unit->getName()} - Div by number", function () use ($unit, $precision) {
-        $value1 = getRandom();
+        $value1 = getRandomNumber();
         do {
-            $value2 = getRandom();
+            $value2 = getRandomNumber();
         } while ($value2 === 0.0);
         $resultValue = $value1 / $value2;
 
@@ -145,5 +146,16 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
         $length1->divByNumber($value2);
 
         expect($length1->equals($resultValue, $unit, $precision))->toBeTrue();
+    });
+
+    test("{$unit->getName()} - Div by length", function () use ($unit, $precision) {
+        $value1         = getRandomNumber();
+        $value2         = getRandomNumber();
+        $expectedResult = round($value1 / $value2, $precision);
+
+        $length1      = new Length($value1, $unit);
+        $actualResult = round($length1->divByLength($value2, $unit), $precision);
+
+        expect($expectedResult)->toBe($actualResult);
     });
 }

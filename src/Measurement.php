@@ -7,9 +7,9 @@ use Exception;
 abstract class Measurement
 {
     /** @var float Will always be in base units */
-    private float  $value;
-    private bool   $isMutable = true;
-    private string $unitClass;
+    protected float           $value;
+    private bool              $isMutable = true;
+    protected readonly string $unitClass;
 
     protected function __construct(float $value, Unit|int $unit, string $unitClass)
     {
