@@ -7,9 +7,9 @@ use Exception;
 abstract class Measurement
 {
     /** @var float Will always be in base units */
-    protected float $value;
-    private bool    $isMutable;
-    private string  $unitClass;
+    private float  $value;
+    private bool   $isMutable;
+    private string $unitClass;
 
     protected function __construct(float $value, Unit|int $unit, bool $isMutable, string $unitClass)
     {
@@ -42,22 +42,17 @@ abstract class Measurement
         return $this->value / $unit->getBaseUnitsPer();
     }
 
+    final protected function setValue(float $value): self
+    {
+        if (!$this->isMutable()) {
+            throw new Exception('Cannot set value. Instance is immutable');
+        }
+        return $this;
+    }
+
     final public function isMutable(): bool
     {
         return $this->isMutable;
-    }
-
-    /**
-     * Throws an exception if the measurement is immutable
-     *
-     * @return void
-     * @throws Exception
-     */
-    final protected function checkMutability(): void
-    {
-        if (!$this->isMutable()) {
-            throw new Exception('Attempting to alter measurement but measurement is not mutable');
-        }
     }
 
     /**
@@ -111,8 +106,7 @@ abstract class Measurement
     {
         // add the value of the incoming measurement to this object
         if ($value instanceof static) {
-            $this->value += $value->value;
-            return $this;
+            return $this->setValue($this->value += $value->value);
         }
 
         if ($unit === null) {
@@ -137,8 +131,7 @@ abstract class Measurement
     {
         // add the value of the incoming measurement to this object
         if ($value instanceof static) {
-            $this->value -= $value->value;
-            return $this;
+            return $this->setValue($this->value -= $value->value);
         }
 
         if ($unit === null) {
@@ -160,8 +153,7 @@ abstract class Measurement
      */
     public function mulByNumber(float $value): self
     {
-        $this->value *= $value;
-        return $this;
+        return $this->setValue($this->value *= $value);
     }
 
     /**
@@ -173,7 +165,6 @@ abstract class Measurement
      */
     public function divByNumber(float $value): self
     {
-        $this->value /= $value;
-        return $this;
+        return $this->setValue($this->value /= $value);
     }
 }
