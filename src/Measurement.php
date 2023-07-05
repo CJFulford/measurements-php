@@ -8,17 +8,16 @@ abstract class Measurement
 {
     /** @var float Will always be in base units */
     private float  $value;
-    private bool   $isMutable;
+    private bool   $isMutable = true;
     private string $unitClass;
 
-    protected function __construct(float $value, Unit|int $unit, bool $isMutable, string $unitClass)
+    protected function __construct(float $value, Unit|int $unit, string $unitClass)
     {
         // get the unit object for the id
         $unit = is_int($unit) ? new $unitClass($unit) : $unit;
 
         // always convert the value so the value is in the base units
         $this->value     = $value * $unit->getBaseUnitsPer();
-        $this->isMutable = $isMutable;
         $this->unitClass = $unitClass;
     }
 
