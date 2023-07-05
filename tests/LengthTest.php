@@ -55,6 +55,22 @@ foreach (array_keys(LengthUnit::getUnitDefinitions()) as $unitId) {
         }
     );
 
+    test("{$unit->getName()} - error on immutable add", function () use ($unit) {
+        (new Length(getRandom(), $unit))->setImmutable()->add(0, $unit);
+    })->throws(Exception::class);
+
+    test("{$unit->getName()} - error on immutable subtract", function () use ($unit) {
+        (new Length(getRandom(), $unit))->setImmutable()->sub(0, $unit);
+    })->throws(Exception::class);
+
+    test("{$unit->getName()} - error on immutable multiply", function () use ($unit) {
+        (new Length(getRandom(), $unit))->setImmutable()->mulByNumber(1);
+    })->throws(Exception::class);
+
+    test("{$unit->getName()} - error on immutable division", function () use ($unit) {
+        (new Length(getRandom(), $unit))->setImmutable()->divByNumber(1);
+    })->throws(Exception::class);
+
     test("{$unit->getName()} - Add 2 lengths", function () use ($unit, $precision) {
         $value1      = getRandom();
         $value2      = getRandom();
