@@ -2,15 +2,16 @@
 
 namespace Cjfulford\Measurements;
 
-class LengthUnit extends Unit
+class AreaUnit extends Unit
 {
+
     public function __construct(int $id)
     {
         parent::__construct(
             id               : $id,
-            baseUnitsPerPower: 1,
-            namePrefix       : '',
-            acronymPostfix   : ''
+            baseUnitsPerPower: 2,
+            namePrefix       : 'square',
+            acronymPostfix   : '²'
         );
     }
 }

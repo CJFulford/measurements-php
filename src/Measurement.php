@@ -8,17 +8,29 @@ abstract class Measurement
 {
     /** @var float Will always be in base units */
     protected float           $value;
+    protected readonly float  $unitId;
     private bool              $isMutable = true;
     protected readonly string $unitClass;
 
+    /**
+     * @param float $value
+     * @param Unit|int $unit
+     * @param string $unitClass
+     * @throws Exception
+     */
     protected function __construct(float $value, Unit|int $unit, string $unitClass)
     {
-        // get the unit object for the id
-        $unit = is_int($unit) ? new $unitClass($unit) : $unit;
-
-        // always convert the value so the value is in the base units
-        $this->value     = $value * $unit->getBaseUnitsPer();
         $this->unitClass = $unitClass;
+
+        // get the unit object for the id
+        if (is_int($unit)) {
+            $unit = new $this->unitClass($unit);
+        } else {
+            $this->checkUnitCompatibility($unit);
+        }
+
+        $this->value  = $value;
+        $this->unitId = $unit->getId();
     }
 
     final protected function checkUnitCompatibility(Unit $unit): void
@@ -28,17 +40,23 @@ abstract class Measurement
         }
     }
 
+    abstract public function getUnit(): Unit;
+
     /**
      * Returns the value of the measurement in the requested unit.
      *
-     * @param Unit $unit
+     * @param Unit|int $unit
      * @return float
      * @throws Exception
      */
-    final public function getValue(Unit $unit): float
+    final public function getValue(Unit|int $unit): float
     {
-        $this->checkUnitCompatibility($unit);
-        return $this->value / $unit->getBaseUnitsPer();
+        if (is_int($unit)) {
+            $unit = new $this->unitClass($unit);
+        } else {
+            $this->checkUnitCompatibility($unit);
+        }
+        return $this->value * $this->getUnit()->getBaseUnitsPer() / $unit->getBaseUnitsPer();
     }
 
     final protected function setValue(float $value): self
@@ -46,6 +64,7 @@ abstract class Measurement
         if (!$this->isMutable()) {
             throw new Exception('Cannot set value. Instance is immutable');
         }
+        $this->value = $value;
         return $this;
     }
 
@@ -66,85 +85,60 @@ abstract class Measurement
     }
 
     /**
-     * determine if this is equal to another measurement
+     * Determine if this is equal to another measurement. Compares the values in the units of this object
      *
-     * @param Measurement|float $value if this value is a Length, $unit is ignored
+     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
      * @param Unit|int|null $unit must be set if $value is a Length
      * @param int $precision how many decimals to compare to
      * @return bool
      * @throws Exception
      */
-    public function equals(Measurement|float $value, Unit|int|null $unit = null, int $precision = 5): bool
+    public function equals(Measurement|float $measurement, Unit|int|null $unit = null, int $precision = 5): bool
     {
-        // add the value of the incoming measurement to this object
-        if ($value instanceof static) {
-            $difference = abs($this->value - $value->value);
+        if ($measurement instanceof static) {
+            $difference = abs($this->value - $measurement->getValue($this->getUnit()));
             $epsilon    = pow(10, -1 * $precision);
             return $difference < $epsilon;
         }
 
-        if ($unit === null) {
-            throw new Exception('No unit provided');
-        }
-
-        // ensure that $unit is a LengthUnit
-        $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
-        // recurse on this function now that the argument is a Length
-        return $this->equals(new static($value, $unit));
+        return $this->equals(new static($measurement, $unit));
     }
 
     /**
-     * adds the provided length to this length
+     * Adds the provided length to this length.
+     * This instance is modified
      *
-     * @param Measurement|float $value if this value is a Length, $unit is ignored
+     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
      * @param Unit|int|null $unit must be set if $value is a Length
      * @return $this
      * @throws Exception
      */
-    public function add(Measurement|float $value, Unit|int|null $unit = null): self
+    public function add(Measurement|float $measurement, Unit|int|null $unit = null): self
     {
-        // add the value of the incoming measurement to this object
-        if ($value instanceof static) {
-            return $this->setValue($this->value += $value->value);
-        }
-
-        if ($unit === null) {
-            throw new Exception('No unit provided');
-        }
-
-        // ensure that $unit is a LengthUnit
-        $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
-        // recurse on this function now that the argument is a Length
-        return $this->add(new static($value, $unit));
+        return $measurement instanceof static
+            ? $this->setValue($this->value += $measurement->getValue($this->getUnit()))
+            : $this->add(new static($measurement, $unit));
     }
 
     /**
-     * subtracts the provided length from this length
+     * Subtracts the provided length from this length.
+     * This instance is modified.
      *
-     * @param Measurement|float $value if this value is a Length, $unit is ignored
+     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
      * @param Unit|int|null $unit must be set if $value is a Length
      * @return $this
      * @throws Exception
      */
-    public function sub(Measurement|float $value, Unit|int|null $unit = null): self
+    public function sub(Measurement|float $measurement, Unit|int|null $unit = null): self
     {
-        // add the value of the incoming measurement to this object
-        if ($value instanceof static) {
-            return $this->setValue($this->value -= $value->value);
-        }
-
-        if ($unit === null) {
-            throw new Exception('No unit provided');
-        }
-
-        // ensure that $unit is a LengthUnit
-        $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
-        // recurse on this function now that the argument is a Length
-        return $this->sub(new static($value, $unit));
+        return $measurement instanceof static
+            ? $this->setValue($this->value -= $measurement->getValue($this->getUnit()))
+            : $this->sub(new static($measurement, $unit));
     }
 
     /**
-     * multiplies the value of this measurement by the provided value
+     * Multiplies the value of this measurement by the provided value.
+     * This instance is modified.
      *
      * @param float $value
      * @return $this
@@ -156,7 +150,9 @@ abstract class Measurement
     }
 
     /**
-     * Divides the value of this measurement by the provided value. Provides no checks for division by 0
+     * Divides the value of this measurement by the provided value.
+     * Provides no checks for division by 0.
+     * This instance is modified.
      *
      * @param float $value
      * @return $this

@@ -7,7 +7,7 @@ use Exception;
 class Length extends Measurement
 {
 
-    public function __construct(float $value, Unit|int $unit)
+    public function __construct(float $value, LengthUnit|int $unit)
     {
         parent::__construct(
             value    : $value,
@@ -16,27 +16,24 @@ class Length extends Measurement
         );
     }
 
+    public function getUnit(): LengthUnit
+    {
+        return new LengthUnit($this->unitId);
+    }
+
     /**
-     * A length divided by a length causes the units to cancel out and therefore this returns a number
+     * A length divided by a length causes the units to cancel out and therefore this returns a number.
+     * This instance is not modified
      *
-     * @param Length|float $value
+     * @param Length|float $length
      * @param LengthUnit|int|null $unit
      * @return float
      * @throws Exception
      */
-    public function divByLength(Length|float $value, LengthUnit|int|null $unit = null): float
+    public function divByLength(Length|float $length, LengthUnit|int|null $unit = null): float
     {
-        if ($value instanceof Length) {
-            return $this->value / $value->value;
-        }
-
-        if ($unit === null) {
-            throw new Exception('No unit provided');
-        }
-
-        // ensure that $unit is a LengthUnit
-        $unit = $unit instanceof $this->unitClass ? $unit : new $this->unitClass($unit);
-        // recurse on this function now that the argument is a Length
-        return $this->divByLength(new self($value, $unit));
+        return $length instanceof Length
+            ? $this->value / $length->getValue($this->getUnit())
+            : $this->divByLength(new self($length, $unit));
     }
 }
