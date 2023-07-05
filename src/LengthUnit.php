@@ -52,7 +52,7 @@ class LengthUnit extends Unit
              */
             self::KILOMETRE  => [
                 self::DEF_NAME           => 'kilometre',
-                self::DEF_SYMBOL         => 'mk',
+                self::DEF_SYMBOL         => 'km',
                 self::DEF_BASE_UNITS_PER => 10e3
             ],
             self::METRE      => [
@@ -62,7 +62,7 @@ class LengthUnit extends Unit
             ],
             self::CENTIMETRE => [
                 self::DEF_NAME           => 'centimetre',
-                self::DEF_SYMBOL         => 'mc',
+                self::DEF_SYMBOL         => 'cm',
                 self::DEF_BASE_UNITS_PER => 10e-2
             ],
             self::MILLIMETRE => [
@@ -72,12 +72,12 @@ class LengthUnit extends Unit
             ],
             self::MICROMETRE => [
                 self::DEF_NAME           => 'micrometre',
-                self::DEF_SYMBOL         => 'mμ',
+                self::DEF_SYMBOL         => 'μm',
                 self::DEF_BASE_UNITS_PER => 10e-6
             ],
             self::NANOMETRE  => [
                 self::DEF_NAME           => 'nanometre',
-                self::DEF_SYMBOL         => 'mn',
+                self::DEF_SYMBOL         => 'nm',
                 self::DEF_BASE_UNITS_PER => 10e-9
             ],
         ];
