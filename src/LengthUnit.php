@@ -4,18 +4,18 @@ namespace Cjfulford\Measurements;
 
 class LengthUnit extends Unit
 {
-    // Imperial
-    public const INCH = 4;
-    public const FOOT = 6;
-    public const YARD = 7;
-    public const MILE = 10;
     // Metric
-    public const KILOMETRE  = 18;
-    public const METRE      = 21;
-    public const CENTIMETRE = 23;
-    public const MILLIMETRE = 24;
-    public const MICROMETRE = 25;
-    public const NANOMETRE  = 26;
+    public const KILOMETRE  = 1;
+    public const METRE      = 2;
+    public const CENTIMETRE = 3;
+    public const MILLIMETRE = 4;
+    public const MICROMETRE = 5;
+    public const NANOMETRE  = 6;
+    // Imperial
+    public const INCH = 7;
+    public const FOOT = 8;
+    public const YARD = 9;
+    public const MILE = 10;
 
     final public static function getUnitDefinitions(): array
     {
