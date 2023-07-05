@@ -5,7 +5,7 @@ namespace Cjfulford\Measurements;
 class Length extends Measurement
 {
 
-    public function __construct(float $value, Unit|int $unit, bool $isMutable = false)
+    public function __construct(float $value, Unit|int $unit, bool $isMutable = true)
     {
         parent::__construct(
             value    : $value,
