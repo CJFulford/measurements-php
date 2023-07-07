@@ -12,6 +12,8 @@ abstract class Measurement
     private bool              $isMutable = true;
     protected readonly string $unitClass;
 
+    private const DEFAULT_PRECISION = 5;
+
     /**
      * @param float $value
      * @param Unit|int $unit
@@ -87,14 +89,17 @@ abstract class Measurement
     /**
      * Determine if this is equal to another measurement. Compares the values in the units of this object
      *
-     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
-     * @param Unit|int|null $unit must be set if $value is a Length
+     * @param Measurement|float $measurement if this value is a measurement, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a measurement
      * @param int $precision how many decimals to compare to
      * @return bool
      * @throws Exception
      */
-    public function equals(Measurement|float $measurement, Unit|int|null $unit = null, int $precision = 5): bool
-    {
+    public function equals(
+        Measurement|float $measurement,
+        Unit|int|null     $unit = null,
+        int               $precision = self::DEFAULT_PRECISION
+    ): bool {
         if ($measurement instanceof static) {
             $difference = abs($this->value - $measurement->getValue($this->getUnit()));
             $epsilon    = pow(10, -1 * $precision);
@@ -105,11 +110,11 @@ abstract class Measurement
     }
 
     /**
-     * Adds the provided length to this length.
+     * Adds the provided measurement to this measurement.
      * This instance is modified
      *
-     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
-     * @param Unit|int|null $unit must be set if $value is a Length
+     * @param Measurement|float $measurement if this value is a measurement, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a measurement
      * @return $this
      * @throws Exception
      */
@@ -121,11 +126,11 @@ abstract class Measurement
     }
 
     /**
-     * Subtracts the provided length from this length.
+     * Subtracts the provided measurement from this measurement.
      * This instance is modified.
      *
-     * @param Measurement|float $measurement if this value is a Length, $unit is ignored
-     * @param Unit|int|null $unit must be set if $value is a Length
+     * @param Measurement|float $measurement if this value is a measurement, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a measurement
      * @return $this
      * @throws Exception
      */
@@ -161,5 +166,75 @@ abstract class Measurement
     public function divByNumber(float $value): self
     {
         return $this->setValue($this->value /= $value);
+    }
+
+    /**
+     * Determine if this measurement is greater than the provided measurement, check for equal to if corresponding parameter is set parameter is set
+     * This instance is not modified.
+     *
+     * @param Measurement|float $measurement if this value is a measurement, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a measurement
+     * @param bool $orEqualTo
+     * @param int $precision
+     * @return bool
+     * @throws Exception
+     */
+    public function isGreaterThan(
+        Measurement|float $measurement,
+        Unit|int|null     $unit = null,
+        bool              $orEqualTo = false,
+        int               $precision = self::DEFAULT_PRECISION
+    ): bool {
+        if ($measurement instanceof static) {
+            $thisValue = round($this->value, $precision);
+            $thatValue = round($measurement->value, $precision);
+            return $thisValue > $thatValue
+                   || ($orEqualTo
+                       && $this->equals(
+                        measurement: $measurement,
+                        precision  : $precision
+                    ));
+        }
+
+        return $this->isGreaterThan(
+            measurement: new static($measurement, $unit),
+            orEqualTo  : $orEqualTo,
+            precision  : $precision
+        );
+    }
+
+    /**
+     * Determine if this measurement is less than the provided measurement, check for equal to if corresponding parameter is set parameter is set
+     * This instance is not modified.
+     *
+     * @param Measurement|float $measurement if this value is a measurement, $unit is ignored
+     * @param Unit|int|null $unit must be set if $value is a measurement
+     * @param bool $orEqualTo
+     * @param int $precision
+     * @return bool
+     * @throws Exception
+     */
+    public function isLessThan(
+        Measurement|float $measurement,
+        Unit|int|null     $unit = null,
+        bool              $orEqualTo = false,
+        int               $precision = self::DEFAULT_PRECISION
+    ): bool {
+        if ($measurement instanceof static) {
+            $thisValue = round($this->value, $precision);
+            $thatValue = round($measurement->value, $precision);
+            return $thisValue < $thatValue
+                   || ($orEqualTo
+                       && $this->equals(
+                        measurement: $measurement,
+                        precision  : $precision
+                    ));
+        }
+
+        return $this->isGreaterThan(
+            measurement: new static($measurement, $unit),
+            orEqualTo  : $orEqualTo,
+            precision  : $precision
+        );
     }
 }
