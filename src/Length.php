@@ -36,4 +36,20 @@ class Length extends Measurement
             ? $this->value / $length->getValue($this->getUnit())
             : $this->divByLength(new self($length, $unit));
     }
+
+    /**
+     * A length multiplied by a length squares the units resulting in an Area
+     * This instance is not modified
+     *
+     * @param Length|float $length
+     * @param LengthUnit|int|null $unit
+     * @return Area
+     * @throws Exception
+     */
+    public function mulByLength(Length|float $length, LengthUnit|int|null $unit = null): Area
+    {
+        return $length instanceof Length
+            ? new Area($this->value * $length->getValue($this->getUnit()), $this->getUnit()->getCorrespondingAreaUnit())
+            : $this->mulByLength(new self($length, $unit));
+    }
 }
