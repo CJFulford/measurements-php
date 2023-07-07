@@ -14,4 +14,9 @@ class AreaUnit extends Unit
             acronymPostfix   : '²'
         );
     }
+
+    public function getCorrespondingLengthUnit() : LengthUnit
+    {
+        return new LengthUnit($this->getId());
+    }
 }
