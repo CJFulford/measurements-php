@@ -35,7 +35,7 @@ class Area extends Measurement
         if ($length instanceof Length) {
             $area   = $this->value;
             $length = $length->getValue($this->getUnit());
-            return new Length($area / $length, Unit::METRE);
+            return new Length($area / $length, $this->getUnit()->getCorrespondingLengthUnit());
         }
 
         // recurse on this function now that the argument is a Length
