@@ -2,59 +2,97 @@
 
 namespace Cjfulford\Measurements;
 
-use Exception;
+use DANJER\model\Length;
 
-class Area extends Measurement
+use function Cjfulford\Measurements\Helpers\floatsEqual;
+
+readonly class Area
 {
+    public AreaUnit $unit;
+    public bool     $isZero;
+    public bool     $isNotZero;
+    public float    $inBaseUnits;
+    public float    $squareInches;
+    public float    $squareFeet;
+    public float    $squareMetres;
 
-    public function __construct(float $value, AreaUnit|int $unit)
+    public function __construct(public float $value, AreaUnit|int $unit)
     {
-        parent::__construct(
-            value    : $value,
-            unit     : $unit,
-            unitClass: AreaUnit::class
-        );
+        $this->unit         = $unit instanceof AreaUnit ? $unit : new AreaUnit($unit);
+        $this->isZero       = floatsEqual($this->value, 0);
+        $this->isNotZero    = !$this->isZero;
+        $this->inBaseUnits  = $this->getValue(AreaUnit::BASE_UNIT);
+        $this->squareInches = $this->getValue(AreaUnit::SQUARE_INCH);
+        $this->squareFeet   = $this->getValue(AreaUnit::SQUARE_FOOT);
+        $this->squareMetres = $this->getValue(AreaUnit::SQUARE_METRE);
     }
 
-    public function getUnit(): AreaUnit
+    public function getValue($unit): float
     {
-        return new AreaUnit($this->unitId);
-    }
+        $unit = $unit instanceof AreaUnit ? $unit : new AreaUnit($unit);
 
-    /**
-     * An area divided by a length returns a new length as the units cancel out.
-     * This instance is not modified
-     *
-     * @param Length|float $length
-     * @param LengthUnit|int|null $unit
-     * @return Length
-     * @throws Exception
-     */
-    public function divByLength(Length|float $length, LengthUnit|int|null $unit = null): Length
-    {
-        if ($length instanceof Length) {
-            $area   = $this->value;
-            $length = $length->getValue($this->getUnit());
-            return new Length($area / $length, $this->getUnit()->getCorrespondingLengthUnit());
+        if ($this->unit === $unit) {
+            return $this->value;
+        } elseif ($this->unit->isBaseUnit) {
+            return $this->value / $unit->baseUnitsPer;
+        } elseif ($unit->isBaseUnit) {
+            return $this->value * $this->unit->baseUnitsPer;
         }
-
-        // recurse on this function now that the argument is a Length
-        return $this->divByLength(new Length($length, $unit));
+        return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    /**
-     * An area divided by an area returns a number as the units cancel out.
-     * This instance is not modified
-     *
-     * @param Area|float $area
-     * @param AreaUnit|int|null $unit
-     * @return float
-     * @throws Exception
-     */
-    public function divByArea(Area|float $area, AreaUnit|int|null $unit = null): float
+    public function add(Area $area): self
     {
-        return $area instanceof Area
-            ? $this->value / $area->getValue($this->getUnit())
-            : $this->divByArea(new Area($area, $unit));
+        return new Area($this->value + $area->getValue($this->unit), $this->unit);
+    }
+
+    public function sub(Area $area): self
+    {
+        return new Area($this->value - $area->getValue($this->unit), $this->unit);
+    }
+
+    public function mulByNumber(float $multiplier): self
+    {
+        return new Area($this->value * $multiplier, $this->unit);
+    }
+
+    public function divByNumber(float $divisor): self
+    {
+        return new Area($this->value / $divisor, $this->unit);
+    }
+
+    public function divByLength(Length $length): Length
+    {
+        $correspondingLengthUnit = $this->unit->correspondingLengthUnit;
+        return new Length($this->value / $length->getValue($correspondingLengthUnit), $correspondingLengthUnit);
+    }
+
+    public function divByArea(Area $area): float
+    {
+        return $this->value / $area->getValue($this->unit);
+    }
+
+    public function isEqualTo(Area $area): bool
+    {
+        return floatsEqual($this->inBaseUnits, $area->inBaseUnits);
+    }
+
+    public function isGreaterThan(Area $area, bool $orEqualTo): bool
+    {
+        return $orEqualTo
+            ? $area->inBaseUnits <= $this->inBaseUnits
+            : $area->inBaseUnits < $this->inBaseUnits;
+    }
+
+    public function isLessThan(Area $area, bool $orEqualTo): bool
+    {
+        return $orEqualTo
+            ? $this->inBaseUnits <= $area->inBaseUnits
+            : $this->inBaseUnits < $area->inBaseUnits;
+    }
+
+    public function format(AreaUnit|int $unit, int $decimals, Format $format = Format::ACRONYM): string
+    {
+        return $format->formatArea($this, $unit instanceof AreaUnit ? $unit : new AreaUnit($unit), $decimals);
     }
 }
