@@ -1,5 +1,5 @@
 {
-    "name": "cjfulford/measurements",
+    "name": "cjfulford/measurements-php",
     "description": "Objectify measurements and provide functions to use math on the objects that abstracts away units",
     "type": "library",
     "license": "MIT",
