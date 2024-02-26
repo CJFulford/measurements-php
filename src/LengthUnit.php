@@ -6,18 +6,16 @@ use InvalidArgumentException;
 
 readonly class LengthUnit extends Unit
 {
-    public const KILOMETRE  = 1;
-    public const METRE      = 2;
-    public const CENTIMETRE = 3;
-    public const MILLIMETRE = 4;
-    public const INCH       = 5;
-    public const FOOT       = 6;
-    public const YARD       = 7;
-    public const MILE       = 8;
+    public const int KILOMETRE  = 1;
+    public const int METRE      = 2;
+    public const int CENTIMETRE = 3;
+    public const int MILLIMETRE = 4;
+    public const int INCH       = 5;
+    public const int FOOT       = 6;
+    public const int YARD       = 7;
+    public const int MILE       = 8;
 
-    public const BASE_UNIT = self::METRE;
-
-    private const UNITS = [
+    private const array UNITS = [
         self::KILOMETRE  => [
             'name'         => 'kilometre',
             'pluralName'   => 'kilometres',
@@ -76,8 +74,6 @@ readonly class LengthUnit extends Unit
         ],
     ];
 
-    public bool $isBaseUnit;
-
     public function __construct(int $id)
     {
         $unit = self::UNITS[$id];
@@ -85,8 +81,6 @@ readonly class LengthUnit extends Unit
         if ($unit === null) {
             throw new InvalidArgumentException("Invalid unit ID: $id");
         }
-
-        $this->isBaseUnit = $id === self::BASE_UNIT;
 
         parent::__construct(
             id          : $id,

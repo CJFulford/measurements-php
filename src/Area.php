@@ -2,34 +2,38 @@
 
 namespace Cjfulford\Measurements;
 
-use DANJER\model\LengthImmutable;
+use DANJER\model\Length;
 
-class AreaImmutable extends AbstractArea
+class Area extends AbstractArea
 {
     public function add(AbstractArea $area): static
     {
-        return new self($this->value + $area->getValue($this->unit), $this->unit);
+        $this->value += $area->getValue($this->unit);
+        return $this;
     }
 
     public function sub(AbstractArea $area): static
     {
-        return new self($this->value - $area->getValue($this->unit), $this->unit);
+        $this->value -= $area->getValue($this->unit);
+        return $this;
     }
 
     public function mulByNumber(float $multiplier): static
     {
-        return new self($this->value * $multiplier, $this->unit);
+        $this->value *= $multiplier;
+        return $this;
     }
 
     public function divByNumber(float $divisor): static
     {
-        return new self($this->value / $divisor, $this->unit);
+        $this->value /= $divisor;
+        return $this;
     }
 
-    public function divByLength(AbstractLength $length): LengthImmutable
+    public function divByLength(AbstractLength $length): Length
     {
         $correspondingLengthUnit = $this->unit->correspondingLengthUnit;
-        return new LengthImmutable(
+        return new Length(
             $this->value / $length->getValue($correspondingLengthUnit), $correspondingLengthUnit
         );
     }

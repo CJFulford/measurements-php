@@ -3,31 +3,34 @@
 namespace DANJER\model;
 
 use Cjfulford\Measurements\AbstractLength;
-use Cjfulford\Measurements\AreaImmutable;
+use Cjfulford\Measurements\Area;
 use Cjfulford\Measurements\AreaUnit;
 use Cjfulford\Measurements\LengthUnit;
 use Exception;
 
-class LengthImmutable extends AbstractLength
+class Length extends AbstractLength
 {
     public function add(AbstractLength $length): static
     {
-        return new self($this->value + $length->getValue($this->unit), $this->unit);
+        $this->value += $length->getValue($this->unit);
+        return $this;
     }
 
     public function sub(AbstractLength $length): static
     {
-        return new self($this->value - $length->getValue($this->unit), $this->unit);
+        $this->value -= $length->getValue($this->unit);
+        return $this;
     }
 
     public function mulByNumber(float $number): static
     {
-        return new self($this->value * $number, $this->unit);
+        $this->value *= $number;
+        return $this;
     }
 
-    public function mulByLength(AbstractLength $length): AreaImmutable
+    public function mulByLength(AbstractLength $length): Area
     {
-        return new AreaImmutable(
+        return new Area(
             $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
             AreaUnit::SQUARE_METRE
         );
@@ -35,7 +38,8 @@ class LengthImmutable extends AbstractLength
 
     public function divByNumber(float $number): static
     {
-        return new self($this->value / $number, $this->unit);
+        $this->value /= $number;
+        return $this;
     }
 
     /**
@@ -46,7 +50,8 @@ class LengthImmutable extends AbstractLength
      */
     public function ceil(LengthUnit|int $unit): static
     {
-        return new self(ceil($this->getValue($unit)), $unit);
+        $this->value = ceil($this->getValue($unit));
+        return $this;
     }
 
     /**
@@ -57,7 +62,8 @@ class LengthImmutable extends AbstractLength
      */
     public function floor(LengthUnit|int $unit): static
     {
-        return new self(floor($this->getValue($unit)), $unit);
+        $this->value = floor($this->getValue($unit));
+        return $this;
     }
 
     /**
@@ -69,21 +75,25 @@ class LengthImmutable extends AbstractLength
      */
     public function round(LengthUnit|int $unit, int $precision = 0): static
     {
-        return new self(round($this->getValue($unit), $precision), $unit);
+        $this->value = round($this->getValue($unit), $precision);
+        return $this;
     }
 
     public function modulo(AbstractLength $length): static
     {
-        return new self($this->value % $length->getValue($this->unit), $this->unit);
+        $this->value = $this->value % $length->getValue($this->unit);
+        return $this;
     }
 
     public function min(AbstractLength $max): static
     {
-        return new self(min($this->value, $max->getValue($this->unit)), $this->unit);
+        $this->value = min($this->value, $max->getValue($this->unit));
+        return $this;
     }
 
     public function max(AbstractLength $max): static
     {
-        return new self(max($this->value, $max->getValue($this->unit)), $this->unit);
+        $this->value = max($this->value, $max->getValue($this->unit));
+        return $this;
     }
 }
