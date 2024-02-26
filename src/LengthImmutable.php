@@ -2,16 +2,15 @@
 
 namespace DANJER\model;
 
-use Cjfulford\Measurements\Area;
+use Cjfulford\Measurements\AreaImmutable;
 use Cjfulford\Measurements\AreaUnit;
 use Cjfulford\Measurements\Format;
 use Cjfulford\Measurements\LengthUnit;
-use Cjfulford\Measurements\Measurement;
 use Exception;
 
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 
-readonly class Length extends Measurement
+readonly class LengthImmutable
 {
     public LengthUnit $unit;
     protected float   $inBaseUnits;
@@ -51,24 +50,24 @@ readonly class Length extends Measurement
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    public function add(Length $length): self
+    public function add(self $length): self
     {
-        return new Length($this->value + $length->getValue($this->unit), $this->unit);
+        return new self($this->value + $length->getValue($this->unit), $this->unit);
     }
 
-    public function sub(Length $length): self
+    public function sub(self $length): self
     {
-        return new Length($this->value - $length->getValue($this->unit), $this->unit);
+        return new self($this->value - $length->getValue($this->unit), $this->unit);
     }
 
     public function mulByNumber(float $value): self
     {
-        return new Length($this->value * $value, $this->unit);
+        return new self($this->value * $value, $this->unit);
     }
 
-    public function mulByLength(Length $length): Area
+    public function mulByLength(self $length): AreaImmutable
     {
-        return new Area(
+        return new AreaImmutable(
             $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
             AreaUnit::SQUARE_METRE
         );
@@ -76,10 +75,10 @@ readonly class Length extends Measurement
 
     public function divByNumber(float $number): self
     {
-        return new Length($this->value / $number, $this->unit);
+        return new self($this->value / $number, $this->unit);
     }
 
-    public function divByLength(Length $length): float
+    public function divByLength(self $length): float
     {
         return $this->value / $length->getValue($this->unit);
     }
@@ -92,7 +91,7 @@ readonly class Length extends Measurement
      */
     public function ceil(LengthUnit|int $unit): self
     {
-        return new Length(ceil($this->getValue($unit)), $unit);
+        return new self(ceil($this->getValue($unit)), $unit);
     }
 
     /**
@@ -103,7 +102,7 @@ readonly class Length extends Measurement
      */
     public function floor(LengthUnit|int $unit): self
     {
-        return new Length(floor($this->getValue($unit)), $unit);
+        return new self(floor($this->getValue($unit)), $unit);
     }
 
     /**
@@ -115,42 +114,42 @@ readonly class Length extends Measurement
      */
     public function round(LengthUnit|int $unit, int $precision = 0): self
     {
-        return new Length(round($this->getValue($unit), $precision), $unit);
+        return new self(round($this->getValue($unit), $precision), $unit);
     }
 
-    public function modulo(Length $length): self
+    public function modulo(self $length): self
     {
-        return new Length($this->inBaseUnits % $length->inBaseUnits, LengthUnit::BASE_UNIT);
+        return new self($this->inBaseUnits % $length->inBaseUnits, LengthUnit::BASE_UNIT);
     }
 
-    public function min(Length $max): self
+    public function min(self $max): self
     {
-        return new Length(min($this->value, $max->getValue($this->unit)), $this->unit);
+        return new self(min($this->value, $max->getValue($this->unit)), $this->unit);
     }
 
-    public function max(Length $max): self
+    public function max(self $max): self
     {
-        return new Length(max($this->value, $max->getValue($this->unit)), $this->unit);
+        return new self(max($this->value, $max->getValue($this->unit)), $this->unit);
     }
 
-    public function clamp(Length $min, Length $max): self
+    public function clamp(self $min, self $max): self
     {
         return $this->max($min)->min($max);
     }
 
-    public function isEqualTo(Length $length): bool
+    public function isEqualTo(self $length): bool
     {
         return floatsEqual($this->inBaseUnits, $length->inBaseUnits);
     }
 
-    public function isLessThan(Length $length, bool $orEqualTo): bool
+    public function isLessThan(self $length, bool $orEqualTo): bool
     {
         return $orEqualTo
             ? $this->inBaseUnits <= $length->inBaseUnits
             : $this->inBaseUnits < $length->inBaseUnits;
     }
 
-    public function isGreaterThan(Length $length, bool $orEqualTo): bool
+    public function isGreaterThan(self $length, bool $orEqualTo): bool
     {
         return $orEqualTo
             ? $length->inBaseUnits <= $this->inBaseUnits

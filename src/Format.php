@@ -2,7 +2,7 @@
 
 namespace Cjfulford\Measurements;
 
-use DANJER\model\Length;
+use DANJER\model\LengthImmutable;
 
 enum Format
 {
@@ -10,7 +10,7 @@ enum Format
     case NAME;
     case SYMBOL;
 
-    function formatLength(Length $length, LengthUnit $unit, int $decimals): string
+    function formatLength(LengthImmutable $length, LengthUnit $unit, int $decimals): string
     {
         $value  = number_format($length->getValue($unit), $decimals);
         $append = match ($this) {
@@ -21,7 +21,7 @@ enum Format
         return trim($value . $append);
     }
 
-    function formatArea(Area $area, AreaUnit $unit, int $decimals): string
+    function formatArea(AreaImmutable $area, AreaUnit $unit, int $decimals): string
     {
         $value  = number_format($area->getValue($unit), $decimals);
         $append = match ($this) {

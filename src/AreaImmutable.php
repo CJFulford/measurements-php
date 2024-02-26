@@ -2,11 +2,11 @@
 
 namespace Cjfulford\Measurements;
 
-use DANJER\model\Length;
+use DANJER\model\LengthImmutable;
 
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 
-readonly class Area
+readonly class AreaImmutable
 {
     public AreaUnit $unit;
     public bool     $isZero;
@@ -41,50 +41,52 @@ readonly class Area
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    public function add(Area $area): self
+    public function add(self $area): self
     {
-        return new Area($this->value + $area->getValue($this->unit), $this->unit);
+        return new self($this->value + $area->getValue($this->unit), $this->unit);
     }
 
-    public function sub(Area $area): self
+    public function sub(self $area): self
     {
-        return new Area($this->value - $area->getValue($this->unit), $this->unit);
+        return new self($this->value - $area->getValue($this->unit), $this->unit);
     }
 
     public function mulByNumber(float $multiplier): self
     {
-        return new Area($this->value * $multiplier, $this->unit);
+        return new self($this->value * $multiplier, $this->unit);
     }
 
     public function divByNumber(float $divisor): self
     {
-        return new Area($this->value / $divisor, $this->unit);
+        return new self($this->value / $divisor, $this->unit);
     }
 
-    public function divByLength(Length $length): Length
+    public function divByLength(LengthImmutable $length): LengthImmutable
     {
         $correspondingLengthUnit = $this->unit->correspondingLengthUnit;
-        return new Length($this->value / $length->getValue($correspondingLengthUnit), $correspondingLengthUnit);
+        return new LengthImmutable(
+            $this->value / $length->getValue($correspondingLengthUnit), $correspondingLengthUnit
+        );
     }
 
-    public function divByArea(Area $area): float
+    public function divByArea(self $area): float
     {
         return $this->value / $area->getValue($this->unit);
     }
 
-    public function isEqualTo(Area $area): bool
+    public function isEqualTo(self $area): bool
     {
         return floatsEqual($this->inBaseUnits, $area->inBaseUnits);
     }
 
-    public function isGreaterThan(Area $area, bool $orEqualTo): bool
+    public function isGreaterThan(self $area, bool $orEqualTo): bool
     {
         return $orEqualTo
             ? $area->inBaseUnits <= $this->inBaseUnits
             : $area->inBaseUnits < $this->inBaseUnits;
     }
 
-    public function isLessThan(Area $area, bool $orEqualTo): bool
+    public function isLessThan(self $area, bool $orEqualTo): bool
     {
         return $orEqualTo
             ? $this->inBaseUnits <= $area->inBaseUnits
