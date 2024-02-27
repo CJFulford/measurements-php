@@ -6,18 +6,18 @@ use InvalidArgumentException;
 
 readonly class AreaUnit extends Unit
 {
-    public const SQUARE_METRE      = 1;
-    public const SQUARE_KILOMETRE  = 2;
-    public const SQUARE_CENTIMETRE = 3;
-    public const SQUARE_MILLIMETRE = 4;
-    public const SQUARE_INCH       = 5;
-    public const SQUARE_FOOT       = 6;
-    public const SQUARE_YARD       = 7;
-    public const SQUARE_MILE       = 8;
+    public const int SQUARE_METRE      = 1;
+    public const int SQUARE_KILOMETRE  = 2;
+    public const int SQUARE_CENTIMETRE = 3;
+    public const int SQUARE_MILLIMETRE = 4;
+    public const int SQUARE_INCH       = 5;
+    public const int SQUARE_FOOT       = 6;
+    public const int SQUARE_YARD       = 7;
+    public const int SQUARE_MILE       = 8;
 
-    public const BASE_UNIT = self::SQUARE_METRE;
+    public const int BASE_UNIT = self::SQUARE_METRE;
 
-    private const UNITS = [
+    private const array UNITS = [
         self::SQUARE_KILOMETRE  => [
             'name'                      => 'kilometre',
             'pluralName'                => 'kilometres',
