@@ -12,5 +12,8 @@
         {
             "name": "CJFulford"
         }
-    ]
+    ],
+    "require-dev": {
+        "phpunit/phpunit": "^11"
+    }
 }
