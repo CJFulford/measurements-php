@@ -4,7 +4,7 @@ namespace Cjfulford\Measurements;
 
 use InvalidArgumentException;
 
-readonly class AreaUnit extends Unit
+class AreaUnit extends Unit
 {
     public const int SQUARE_METRE      = 1;
     public const int SQUARE_KILOMETRE  = 2;
@@ -15,80 +15,100 @@ readonly class AreaUnit extends Unit
     public const int SQUARE_YARD       = 7;
     public const int SQUARE_MILE       = 8;
 
-    public const int BASE_UNIT = self::SQUARE_METRE;
+    public readonly LengthUnit $correspondingLengthUnit;
 
-    private const array UNITS = [
-        self::SQUARE_KILOMETRE  => [
-            'name'                      => 'kilometre',
-            'pluralName'                => 'kilometres',
-            'acronym'                   => 'km²',
-            'correspondingLengthUnitId' => LengthUnit::KILOMETRE,
-        ],
-        self::SQUARE_METRE      => [
-            'name'                      => 'metre',
-            'pluralName'                => 'metres',
-            'acronym'                   => 'm²',
-            'correspondingLengthUnitId' => LengthUnit::METRE,
-        ],
-        self::SQUARE_CENTIMETRE => [
-            'name'                      => 'centimetre',
-            'pluralName'                => 'centimetres',
-            'acronym'                   => 'cm²',
-            'correspondingLengthUnitId' => LengthUnit::CENTIMETRE,
-        ],
-        self::SQUARE_MILLIMETRE => [
-            'name'                      => 'millimetre',
-            'pluralName'                => 'millimetres',
-            'acronym'                   => 'mm²',
-            'correspondingLengthUnitId' => LengthUnit::MILLIMETRE,
-        ],
-        self::SQUARE_INCH       => [
-            'name'                      => 'inch',
-            'pluralName'                => 'inches',
-            'acronym'                   => 'in²',
-            'correspondingLengthUnitId' => LengthUnit::INCH,
-        ],
-        self::SQUARE_FOOT       => [
-            'name'                      => 'foot',
-            'pluralName'                => 'feet',
-            'acronym'                   => 'ft²',
-            'correspondingLengthUnitId' => LengthUnit::FOOT,
-        ],
-        self::SQUARE_YARD       => [
-            'name'                      => 'yard',
-            'pluralName'                => 'yards',
-            'acronym'                   => 'yd²',
-            'correspondingLengthUnitId' => LengthUnit::YARD,
-        ],
-        self::SQUARE_MILE       => [
-            'name'                      => 'mile',
-            'pluralName'                => 'miles',
-            'acronym'                   => 'mi²',
-            'correspondingLengthUnitId' => LengthUnit::MILE,
-        ],
-    ];
-
-    public LengthUnit $correspondingLengthUnit;
-    public bool       $isBaseUnit;
-
-    public function __construct(int $id)
-    {
-        $unit = self::UNITS[$id];
-
-        if (!isset($unit)) {
-            throw new InvalidArgumentException("Invalid unit id: $id");
-        }
-
-        $this->correspondingLengthUnit = new LengthUnit($unit['correspondingLengthUnitId']);
-        $this->isBaseUnit              = $id === self::BASE_UNIT;
-
+    final public function __construct(
+        int    $id,
+        string $name,
+        string $pluralName,
+        string $acronym,
+        int    $correspondingLengthUnitId
+    ) {
+        $this->correspondingLengthUnit = LengthUnit::getById($correspondingLengthUnitId);
         parent::__construct(
             id          : $id,
-            baseUnitsPer: pow($this->correspondingLengthUnit->baseUnitsPer, 2),
-            name        : $unit['name'],
-            pluralName  : $unit['pluralName'],
-            acronym     : $unit['acronym'],
-            symbol      : $unit['acronym']
+            baseUnitsPer: $this->correspondingLengthUnit->baseUnitsPer ** 2,
+            name        : $name,
+            pluralName  : $pluralName,
+            acronym     : $acronym,
+            symbol      : $acronym
+        );
+    }
+
+    protected static function checkForUniqueness(self|Unit $newUnit): void
+    {
+        if (!$newUnit instanceof self) {
+            throw new InvalidArgumentException('Unit must be an instance of ' . self::class);
+        }
+
+        parent::checkForUniqueness($newUnit);
+
+        foreach (self::$units[static::class] as $unit) {
+            if ($unit->correspondingLengthUnit->id === $newUnit->correspondingLengthUnit->id) {
+                throw new InvalidArgumentException(
+                    "Unit corresponding length unit ID $newUnit->correspondingLengthUnit->id already exists"
+                );
+            }
+        }
+    }
+
+    final protected static function buildDefaultUnits(): void
+    {
+        new self(
+            id                       : self::SQUARE_KILOMETRE,
+            name                     : 'kilometre',
+            pluralName               : 'kilometres',
+            acronym                  : 'km²',
+            correspondingLengthUnitId: LengthUnit::KILOMETRE
+        );
+        new self(
+            id                       : self::SQUARE_METRE,
+            name                     : 'metre',
+            pluralName               : 'metres',
+            acronym                  : 'm²',
+            correspondingLengthUnitId: LengthUnit::METRE
+        );
+        new self(
+            id                       : self::SQUARE_CENTIMETRE,
+            name                     : 'centimetre',
+            pluralName               : 'centimetres',
+            acronym                  : 'cm²',
+            correspondingLengthUnitId: LengthUnit::CENTIMETRE
+        );
+        new self(
+            id                       : self::SQUARE_MILLIMETRE,
+            name                     : 'millimetre',
+            pluralName               : 'millimetres',
+            acronym                  : 'mm²',
+            correspondingLengthUnitId: LengthUnit::MILLIMETRE
+        );
+        new self(
+            id                       : self::SQUARE_INCH,
+            name                     : 'inch',
+            pluralName               : 'inches',
+            acronym                  : 'in²',
+            correspondingLengthUnitId: LengthUnit::INCH
+        );
+        new self(
+            id                       : self::SQUARE_FOOT,
+            name                     : 'foot',
+            pluralName               : 'feet',
+            acronym                  : 'ft²',
+            correspondingLengthUnitId: LengthUnit::FOOT
+        );
+        new self(
+            id                       : self::SQUARE_YARD,
+            name                     : 'yard',
+            pluralName               : 'yards',
+            acronym                  : 'yd²',
+            correspondingLengthUnitId: LengthUnit::YARD
+        );
+        new self(
+            id                       : self::SQUARE_MILE,
+            name                     : 'mile',
+            pluralName               : 'miles',
+            acronym                  : 'mi²',
+            correspondingLengthUnitId: LengthUnit::MILE
         );
     }
 }
