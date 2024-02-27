@@ -13,7 +13,7 @@ abstract class Unit
 
     public function __construct(
         public readonly int    $id,
-        public readonly int    $baseUnitsPer,
+        public readonly float  $baseUnitsPer,
         public readonly string $name,
         public readonly string $pluralName,
         public readonly string $acronym,
@@ -49,6 +49,7 @@ abstract class Unit
 
     final public static function getById(int $id): static
     {
+        static::buildDefaultUnits();
         $staticUnits = self::$units[static::class];
         foreach ($staticUnits as $unit) {
             if ($unit->id === $id) {
@@ -60,6 +61,7 @@ abstract class Unit
 
     final public static function getByAcronym(string $acronym): static
     {
+        static::buildDefaultUnits();
         $acronym     = trim($acronym);
         $staticUnits = self::$units[static::class];
         foreach ($staticUnits as $unit) {
@@ -72,6 +74,7 @@ abstract class Unit
 
     final public static function getBySymbol(string $symbol): static
     {
+        static::buildDefaultUnits();
         $symbol      = trim($symbol);
         $staticUnits = self::$units[static::class];
         foreach ($staticUnits as $unit) {

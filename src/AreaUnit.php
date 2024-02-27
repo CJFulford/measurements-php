@@ -6,14 +6,14 @@ use InvalidArgumentException;
 
 class AreaUnit extends Unit
 {
-    public const int SQUARE_METRE      = 1;
-    public const int SQUARE_KILOMETRE  = 2;
-    public const int SQUARE_CENTIMETRE = 3;
-    public const int SQUARE_MILLIMETRE = 4;
-    public const int SQUARE_INCH       = 5;
-    public const int SQUARE_FOOT       = 6;
-    public const int SQUARE_YARD       = 7;
-    public const int SQUARE_MILE       = 8;
+    public const SQUARE_METRE      = 1;
+    public const SQUARE_KILOMETRE  = 2;
+    public const SQUARE_CENTIMETRE = 3;
+    public const SQUARE_MILLIMETRE = 4;
+    public const SQUARE_INCH       = 5;
+    public const SQUARE_FOOT       = 6;
+    public const SQUARE_YARD       = 7;
+    public const SQUARE_MILE       = 8;
 
     public readonly LengthUnit $correspondingLengthUnit;
 
@@ -54,6 +54,12 @@ class AreaUnit extends Unit
 
     final protected static function buildDefaultUnits(): void
     {
+        if (isset(self::$units[static::class])) {
+            return;
+        }
+
+        self::$units[static::class] = [];
+
         new self(
             id                       : self::SQUARE_KILOMETRE,
             name                     : 'kilometre',

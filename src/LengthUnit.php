@@ -4,18 +4,18 @@ namespace Cjfulford\Measurements;
 
 class LengthUnit extends Unit
 {
-    public const int KILOMETRE  = 1;
-    public const int METRE      = 2;
-    public const int CENTIMETRE = 3;
-    public const int MILLIMETRE = 4;
-    public const int INCH       = 5;
-    public const int FOOT       = 6;
-    public const int YARD       = 7;
-    public const int MILE       = 8;
+    public const KILOMETRE  = 1;
+    public const METRE      = 2;
+    public const CENTIMETRE = 3;
+    public const MILLIMETRE = 4;
+    public const INCH       = 5;
+    public const FOOT       = 6;
+    public const YARD       = 7;
+    public const MILE       = 8;
 
     final protected static function buildDefaultUnits(): void
     {
-        if (self::$units[static::class] !== null) {
+        if (isset(self::$units[static::class])) {
             return;
         }
 

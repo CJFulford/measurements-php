@@ -19,12 +19,12 @@ abstract class AbstractLength
     final public function __construct(float $value, LengthUnit|int $unit)
     {
         $this->value = $value;
-        $this->unit  = $unit instanceof LengthUnit ? $unit : new LengthUnit($unit);
+        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
     }
 
     final public function getValue(LengthUnit|int $unit): float
     {
-        $unit = $unit instanceof LengthUnit ? $unit : new LengthUnit($unit);
+        $unit = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 

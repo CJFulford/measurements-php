@@ -2,8 +2,6 @@
 
 namespace Cjfulford\Measurements;
 
-use DANJER\model\LengthImmutable;
-
 class AreaImmutable extends AbstractArea
 {
     public function add(AbstractArea $area): static

@@ -20,12 +20,12 @@ abstract class AbstractArea
     final public function __construct(float $value, AreaUnit|int $unit)
     {
         $this->value = $value;
-        $this->unit  = $unit instanceof AreaUnit ? $unit : new AreaUnit($unit);
+        $this->unit  = $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit);
     }
 
     final public function getValue(AreaUnit|int $unit): float
     {
-        $unit = $unit instanceof AreaUnit ? $unit : new AreaUnit($unit);
+        $unit = $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit);
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
@@ -65,6 +65,6 @@ abstract class AbstractArea
 
     final public function format(AreaUnit|int $unit, int $decimals, Format $format = Format::ACRONYM): string
     {
-        return $format->formatArea($this, $unit instanceof AreaUnit ? $unit : new AreaUnit($unit), $decimals);
+        return $format->formatArea($this, $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit), $decimals);
     }
 }

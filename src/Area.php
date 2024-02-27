@@ -2,8 +2,6 @@
 
 namespace Cjfulford\Measurements;
 
-use DANJER\model\Length;
-
 class Area extends AbstractArea
 {
     public function add(AbstractArea $area): static

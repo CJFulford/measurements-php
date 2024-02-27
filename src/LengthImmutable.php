@@ -1,11 +1,7 @@
 <?php
 
-namespace DANJER\model;
+namespace Cjfulford\Measurements;
 
-use Cjfulford\Measurements\AbstractLength;
-use Cjfulford\Measurements\AreaImmutable;
-use Cjfulford\Measurements\AreaUnit;
-use Cjfulford\Measurements\LengthUnit;
 use Exception;
 
 class LengthImmutable extends AbstractLength
