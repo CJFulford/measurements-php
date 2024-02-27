@@ -47,6 +47,7 @@ class Length extends AbstractLength
     public function ceil(LengthUnit|int $unit): static
     {
         $this->value = ceil($this->getValue($unit));
+        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
@@ -59,6 +60,7 @@ class Length extends AbstractLength
     public function floor(LengthUnit|int $unit): static
     {
         $this->value = floor($this->getValue($unit));
+        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
@@ -72,6 +74,7 @@ class Length extends AbstractLength
     public function round(LengthUnit|int $unit, int $precision = 0): static
     {
         $this->value = round($this->getValue($unit), $precision);
+        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
