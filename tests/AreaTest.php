@@ -24,12 +24,22 @@ final class AreaTest extends TestCase
         $area = new Area(1, AreaUnit::SQUARE_METRE);
         $area->add(new Area(1, AreaUnit::SQUARE_METRE));
         $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+
+        // now without a second instance
+        $area = new Area(1, AreaUnit::SQUARE_METRE);
+        $area->add(1, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
     }
 
     public function testSubtraction(): void
     {
         $area = new Area(5, AreaUnit::SQUARE_METRE);
         $area->sub(new Area(3, AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+
+        // now without a second instance
+        $area = new Area(5, AreaUnit::SQUARE_METRE);
+        $area->sub(3, AreaUnit::SQUARE_METRE);
         $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
     }
 
@@ -53,6 +63,11 @@ final class AreaTest extends TestCase
         $length = new Cjfulford\Measurements\Length(5, Cjfulford\Measurements\LengthUnit::METRE);
         $length = $area->divByLength($length);
         $this->assertEquals(2, $length->getValue(Cjfulford\Measurements\LengthUnit::METRE));
+
+        // now without a second instance
+        $area   = new Area(10, AreaUnit::SQUARE_METRE);
+        $length = $area->divByLength(5, Cjfulford\Measurements\LengthUnit::METRE);
+        $this->assertEquals(2, $length->getValue(Cjfulford\Measurements\LengthUnit::METRE));
     }
 
     public function testDivisionByArea(): void
@@ -60,51 +75,93 @@ final class AreaTest extends TestCase
         $area  = new Area(10, AreaUnit::SQUARE_METRE);
         $area2 = new Area(5, AreaUnit::SQUARE_METRE);
         $this->assertEquals(2, $area->divByArea($area2));
+
+        // now without a second instance
+        $area = new Area(10, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(2, $area->divByArea(5, AreaUnit::SQUARE_METRE));
     }
 
     public function testEquality(): void
     {
-        $area  = new Area(10, AreaUnit::SQUARE_METRE);
+        $area1 = new Area(10, AreaUnit::SQUARE_METRE);
         $area2 = new Area(10, AreaUnit::SQUARE_METRE);
-        $this->assertTrue($area->isEqualTo($area2));
-
-        // now with different units
-        $area2 = new Area(100000, AreaUnit::SQUARE_CENTIMETRE);
-        $this->assertTrue($area->isEqualTo($area2));
-    }
-
-    public function testGreaterThan(): void
-    {
-        $area  = new Area(10, AreaUnit::SQUARE_METRE);
-        $area2 = new Area(5, AreaUnit::SQUARE_METRE);
-        $area3 = new Area(10, AreaUnit::SQUARE_METRE);
-        $this->assertTrue($area->isGreaterThan($area2, orEqualTo: false));
-        $this->assertFalse($area->isGreaterThan($area3, orEqualTo: false));
-        $this->assertTrue($area->isGreaterThan($area2, orEqualTo: true));
-        $this->assertTrue($area->isGreaterThan($area3, orEqualTo: true));
-
-        // now make sure it returns the opposite with backwards arguments
-        $this->assertFalse($area2->isGreaterThan($area, orEqualTo: false));
-        $this->assertFalse($area3->isGreaterThan($area, orEqualTo: false));
-        $this->assertFalse($area2->isGreaterThan($area, orEqualTo: true));
-        $this->assertTrue($area3->isGreaterThan($area, orEqualTo: true));
+        $area3 = new Area(100000, AreaUnit::SQUARE_CENTIMETRE);
+        $this->assertTrue($area1->isEqualTo($area2));
+        $this->assertTrue($area1->isEqualTo($area3));
+        $this->assertTrue($area1->isEqualTo(10, AreaUnit::SQUARE_METRE));
+        $this->assertTrue($area1->isEqualTo(100000, AreaUnit::SQUARE_CENTIMETRE));
     }
 
     public function testLessThan(): void
     {
-        $area  = new Area(10, AreaUnit::SQUARE_METRE);
+        $area1 = new Area(5, AreaUnit::SQUARE_METRE);
         $area2 = new Area(5, AreaUnit::SQUARE_METRE);
         $area3 = new Area(10, AreaUnit::SQUARE_METRE);
-        $this->assertFalse($area->isLessThan($area2, orEqualTo: false));
-        $this->assertFalse($area->isLessThan($area3, orEqualTo: false));
-        $this->assertFalse($area->isLessThan($area2, orEqualTo: true));
-        $this->assertTrue($area->isLessThan($area3, orEqualTo: true));
 
-        // now make sure it returns the opposite with backwards arguments
-        $this->assertTrue($area2->isLessThan($area, orEqualTo: false));
-        $this->assertFalse($area3->isLessThan($area, orEqualTo: false));
-        $this->assertTrue($area2->isLessThan($area, orEqualTo: true));
-        $this->assertTrue($area3->isLessThan($area, orEqualTo: true));
+        $this->assertFalse($area1->isLessThan($area2));
+        $this->assertTrue($area1->isLessThan($area3));
+        $this->assertFalse($area1->isLessThan(5, AreaUnit::SQUARE_METRE));
+        $this->assertTrue($area1->isLessThan(10, AreaUnit::SQUARE_METRE));
+
+        // now make sure it returns correctly with backwards arguments
+        $this->assertFalse($area2->isLessThan($area1));
+        $this->assertFalse($area3->isLessThan($area1));
+        $this->assertFalse($area2->isLessThan(5, AreaUnit::SQUARE_METRE));
+        $this->assertFalse($area3->isLessThan(5, AreaUnit::SQUARE_METRE));
+    }
+
+    public function testLessThanOrEqualTo(): void
+    {
+        $area1 = new Area(5, AreaUnit::SQUARE_METRE);
+        $area2 = new Area(5, AreaUnit::SQUARE_METRE);
+        $area3 = new Area(10, AreaUnit::SQUARE_METRE);
+
+        $this->assertTrue($area1->isLessThanOrEqualTo($area2));
+        $this->assertTrue($area1->isLessThanOrEqualTo($area3));
+        $this->assertTrue($area1->isLessThanOrEqualTo(5, AreaUnit::SQUARE_METRE));
+        $this->assertTrue($area1->isLessThanOrEqualTo(10, AreaUnit::SQUARE_METRE));
+
+        // now make sure it returns correctly with backwards arguments
+        $this->assertTrue($area2->isLessThanOrEqualTo($area1));
+        $this->assertFalse($area3->isLessThanOrEqualTo($area1));
+        $this->assertTrue($area2->isLessThanOrEqualTo(5, AreaUnit::SQUARE_METRE));
+        $this->assertFalse($area3->isLessThanOrEqualTo(5, AreaUnit::SQUARE_METRE));
+    }
+
+    public function testGreaterThan(): void
+    {
+        $area1 = new Area(10, AreaUnit::SQUARE_METRE);
+        $area2 = new Area(10, AreaUnit::SQUARE_METRE);
+        $area3 = new Area(5, AreaUnit::SQUARE_METRE);
+
+        $this->assertFalse($area1->isGreaterThan($area2));
+        $this->assertTrue($area1->isGreaterThan($area3));
+        $this->assertFalse($area1->isGreaterThan(10, AreaUnit::SQUARE_METRE));
+        $this->assertTrue($area1->isGreaterThan(5, AreaUnit::SQUARE_METRE));
+
+        // now make sure it returns correctly with backwards arguments
+        $this->assertFalse($area2->isGreaterThan($area1));
+        $this->assertFalse($area3->isGreaterThan($area1));
+        $this->assertFalse($area2->isGreaterThan(10, AreaUnit::SQUARE_METRE));
+        $this->assertFalse($area3->isGreaterThan(10, AreaUnit::SQUARE_METRE));
+    }
+
+    public function testGreaterThanOrEqualTo(): void
+    {
+        $area1 = new Area(10, AreaUnit::SQUARE_METRE);
+        $area2 = new Area(10, AreaUnit::SQUARE_METRE);
+        $area3 = new Area(5, AreaUnit::SQUARE_METRE);
+
+        $this->assertTrue($area1->isGreaterThanOrEqualTo($area2), 1);
+        $this->assertTrue($area1->isGreaterThanOrEqualTo($area3), 2);
+        $this->assertTrue($area1->isGreaterThanOrEqualTo(10, AreaUnit::SQUARE_METRE), 3);
+        $this->assertTrue($area1->isGreaterThanOrEqualTo(5, AreaUnit::SQUARE_METRE), 4);
+
+        // now make sure it returns correctly with backwards arguments
+        $this->assertTrue($area2->isGreaterThanOrEqualTo($area1), 5);
+        $this->assertFalse($area3->isGreaterThanOrEqualTo($area1), 6);
+        $this->assertTrue($area2->isGreaterThanOrEqualTo(10, AreaUnit::SQUARE_METRE), 7);
+        $this->assertFalse($area3->isGreaterThanOrEqualTo(10, AreaUnit::SQUARE_METRE), 8);
     }
 
     public function testFormatting(): void

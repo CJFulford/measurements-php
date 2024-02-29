@@ -6,14 +6,16 @@ use Exception;
 
 class Length extends AbstractLength
 {
-    public function add(AbstractLength $length): static
+    public function add(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
+        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value += $length->getValue($this->unit);
         return $this;
     }
 
-    public function sub(AbstractLength $length): static
+    public function sub(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
+        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value -= $length->getValue($this->unit);
         return $this;
     }
@@ -24,8 +26,9 @@ class Length extends AbstractLength
         return $this;
     }
 
-    public function mulByLength(AbstractLength $length): Area
+    public function mulByLength(AbstractLength|float $length, LengthUnit|int $unit = null): Area
     {
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new Area(
             $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
             AreaUnit::SQUARE_METRE
@@ -41,7 +44,7 @@ class Length extends AbstractLength
     /**
      * Round up to the nearest $unit
      * @param int|LengthUnit $unit
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function ceil(LengthUnit|int $unit): static
@@ -54,7 +57,7 @@ class Length extends AbstractLength
     /**
      * Round down to the nearest $unit
      * @param int|LengthUnit $unit
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function floor(LengthUnit|int $unit): static
@@ -68,7 +71,7 @@ class Length extends AbstractLength
      * Round to the nearest $unit
      * @param int|LengthUnit $unit
      * @param int $precision
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function round(LengthUnit|int $unit, int $precision = 0): static
@@ -78,20 +81,23 @@ class Length extends AbstractLength
         return $this;
     }
 
-    public function modulo(AbstractLength $length): static
+    public function modulo(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
+        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value = $this->value % $length->getValue($this->unit);
         return $this;
     }
 
-    public function min(AbstractLength $max): static
+    public function min(AbstractLength|float $min, LengthUnit|int $unit = null): static
     {
-        $this->value = min($this->value, $max->getValue($this->unit));
+        $min         = $min instanceof AbstractLength ? $min : new static($min, $unit);
+        $this->value = min($this->value, $min->getValue($this->unit));
         return $this;
     }
 
-    public function max(AbstractLength $max): static
+    public function max(AbstractLength|float $max, LengthUnit|int $unit = null): static
     {
+        $max         = $max instanceof AbstractLength ? $max : new static($max, $unit);
         $this->value = max($this->value, $max->getValue($this->unit));
         return $this;
     }

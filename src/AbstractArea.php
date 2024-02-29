@@ -31,38 +31,54 @@ abstract class AbstractArea
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    abstract public function add(self $area): static;
+    abstract public function add(self|float $area, AreaUnit|int $unit = null): static;
 
-    abstract public function sub(self $area): static;
+    abstract public function sub(self|float $area, AreaUnit|int $unit = null): static;
 
     abstract public function mulByNumber(float $multiplier): static;
 
     abstract public function divByNumber(float $divisor): static;
 
-    abstract public function divByLength(AbstractLength $length): AbstractLength;
+    abstract public function divByLength(AbstractLength|float $length, LengthUnit|int $unit = null): AbstractLength;
 
-    final public function divByArea(self $area): float
+    final public function divByArea(self|float $area, AreaUnit|int $unit = null): float
     {
+        $area = $area instanceof self ? $area : new static($area, $unit);
         return $this->value / $area->getValue($this->unit);
     }
 
-    final public function isEqualTo(self $area): bool
+    final public function isEqualTo(self|float $area, AreaUnit|int $unit = null): bool
     {
+        $area = $area instanceof self ? $area : new static($area, $unit);
         return floatsEqual($this->value, $area->getValue($this->unit));
     }
 
-    final public function isGreaterThan(self $area, bool $orEqualTo): bool
+    final public function isLessThan(self|float $area, AreaUnit|int $unit = null): bool
     {
-        return $orEqualTo
-            ? $area->getValue($this->unit) <= $this->value
-            : $area->getValue($this->unit) < $this->value;
+        return $area instanceof self
+            ? $this->value < $area->getValue($this->unit)
+            : $this->isLessThan(new static($area, $unit));
     }
 
-    final public function isLessThan(self $area, bool $orEqualTo): bool
+    final public function isLessThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
     {
-        return $orEqualTo
+        return $area instanceof self
             ? $this->value <= $area->getValue($this->unit)
-            : $this->value < $area->getValue($this->unit);
+            : $this->isLessThanOrEqualTo(new static($area, $unit));
+    }
+
+    final public function isGreaterThan(self|float $area, AreaUnit|int $unit = null): bool
+    {
+        return $area instanceof self
+            ? $this->value > $area->getValue($this->unit)
+            : $this->isGreaterThan(new static($area, $unit));
+    }
+
+    final public function isGreaterThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
+    {
+        return $area instanceof self
+            ? $this->value >= $area->getValue($this->unit)
+            : $this->isGreaterThanOrEqualTo(new static($area, $unit));
     }
 
     final public function format(AreaUnit|int $unit, int $decimals, Format $format = Format::ACRONYM): string
