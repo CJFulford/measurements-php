@@ -30,19 +30,21 @@ abstract class AbstractLength
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    abstract public function add(self $length): static;
+    abstract public function add(self|float $length, LengthUnit|int $unit = null): static;
 
-    abstract public function sub(self $length): static;
+    abstract public function sub(self|float $length, LengthUnit|int $unit = null): static;
 
     abstract public function mulByNumber(float $number): static;
 
-    abstract public function mulByLength(self $length): AbstractArea;
+    abstract public function mulByLength(self|float $length, LengthUnit|int $unit = null): AbstractArea;
 
     abstract public function divByNumber(float $number): static;
 
-    final public function divByLength(self $length): float
+    final public function divByLength(self|float $length, LengthUnit|int $unit = null): float
     {
-        return $this->value / $length->getValue($this->unit);
+        return $length instanceof self
+            ? $this->value / $length->getValue($this->unit)
+            : $this->divByLength(new static($length, $unit));
     }
 
     /**
@@ -70,34 +72,54 @@ abstract class AbstractLength
      */
     abstract public function round(LengthUnit|int $unit, int $precision = 0): static;
 
-    abstract public function modulo(self $length): static;
+    abstract public function modulo(self|float $length, LengthUnit|int $unit = null): static;
 
-    abstract public function min(self $max): static;
+    abstract public function min(self|float $min, LengthUnit|int $unit = null): static;
 
-    abstract public function max(self $max): static;
+    abstract public function max(self|float $max, LengthUnit|int $unit = null): static;
 
-    final public function clamp(self $min, self $max): static
-    {
-        return $this->max($min)->min($max);
+    final public function clamp(
+        self|float     $min,
+        self|float     $max,
+        LengthUnit|int $minUnit = null,
+        LengthUnit|int $maxUnit = null
+    ): static {
+        return $this->max($min, $minUnit)->min($max, $maxUnit);
     }
 
-    final public function isEqualTo(self $length): bool
+    final public function isEqualTo(self|float $length, LengthUnit|int $unit = null): bool
     {
-        return floatsEqual($this->value, $length->getValue($this->unit));
+        return $length instanceof self
+            ? floatsEqual($this->value, $length->getValue($this->unit))
+            : $this->isEqualTo(new static($length, $unit));
     }
 
-    final public function isLessThan(self $length, bool $orEqualTo): bool
+    final public function isLessThan(self|float $length, LengthUnit|int $unit = null): bool
     {
-        return $orEqualTo
+        return $length instanceof self
+            ? $this->value < $length->getValue($this->unit)
+            : $this->isLessThan(new static($length, $unit));;
+    }
+
+    final public function isLessThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
+    {
+        return $length instanceof self
             ? $this->value <= $length->getValue($this->unit)
-            : $this->value < $length->getValue($this->unit);
+            : $this->isLessThanOrEqualTo(new static($length, $unit));
     }
 
-    final public function isGreaterThan(self $length, bool $orEqualTo): bool
+    final public function isGreaterThan(self|float $length, LengthUnit|int $unit = null): bool
     {
-        return $orEqualTo
-            ? $length->getValue($this->unit) <= $this->value
-            : $length->getValue($this->unit) < $this->value;
+        return $length instanceof self
+            ? $this->value > $length->getValue($this->unit)
+            : $this->isGreaterThan(new static($length, $unit));
+    }
+
+    final public function isGreaterThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
+    {
+        return $length instanceof self
+            ? $this->value >= $length->getValue($this->unit)
+            : $this->isGreaterThanOrEqualTo(new static($length, $unit));
     }
 
     final public function format(LengthUnit|int $unit, int $decimals = 0, Format $format = Format::SYMBOL): string

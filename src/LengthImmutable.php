@@ -6,23 +6,26 @@ use Exception;
 
 class LengthImmutable extends AbstractLength
 {
-    public function add(AbstractLength $length): static
+    public function add(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
-        return new self($this->value + $length->getValue($this->unit), $this->unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        return new static($this->value + $length->getValue($this->unit), $this->unit);
     }
 
-    public function sub(AbstractLength $length): static
+    public function sub(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
-        return new self($this->value - $length->getValue($this->unit), $this->unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        return new static($this->value - $length->getValue($this->unit), $this->unit);
     }
 
     public function mulByNumber(float $number): static
     {
-        return new self($this->value * $number, $this->unit);
+        return new static($this->value * $number, $this->unit);
     }
 
-    public function mulByLength(AbstractLength $length): AreaImmutable
+    public function mulByLength(AbstractLength|float $length, LengthUnit|int $unit = null): AreaImmutable
     {
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new AreaImmutable(
             $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
             AreaUnit::SQUARE_METRE
@@ -31,55 +34,58 @@ class LengthImmutable extends AbstractLength
 
     public function divByNumber(float $number): static
     {
-        return new self($this->value / $number, $this->unit);
+        return new static($this->value / $number, $this->unit);
     }
 
     /**
      * Round up to the nearest $unit
      * @param int|LengthUnit $unit
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function ceil(LengthUnit|int $unit): static
     {
-        return new self(ceil($this->getValue($unit)), $unit);
+        return new static(ceil($this->getValue($unit)), $unit);
     }
 
     /**
      * Round down to the nearest $unit
      * @param int|LengthUnit $unit
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function floor(LengthUnit|int $unit): static
     {
-        return new self(floor($this->getValue($unit)), $unit);
+        return new static(floor($this->getValue($unit)), $unit);
     }
 
     /**
      * Round to the nearest $unit
      * @param int|LengthUnit $unit
      * @param int $precision
-     * @return self
+     * @return static
      * @throws Exception
      */
     public function round(LengthUnit|int $unit, int $precision = 0): static
     {
-        return new self(round($this->getValue($unit), $precision), $unit);
+        return new static(round($this->getValue($unit), $precision), $unit);
     }
 
-    public function modulo(AbstractLength $length): static
+    public function modulo(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
-        return new self($this->value % $length->getValue($this->unit), $this->unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        return new static($this->value % $length->getValue($this->unit), $this->unit);
     }
 
-    public function min(AbstractLength $max): static
+    public function min(AbstractLength|float $min, LengthUnit|int $unit = null): static
     {
-        return new self(min($this->value, $max->getValue($this->unit)), $this->unit);
+        $min = $min instanceof AbstractLength ? $min : new static($min, $unit);
+        return new static(min($this->value, $min->getValue($this->unit)), $this->unit);
     }
 
-    public function max(AbstractLength $max): static
+    public function max(AbstractLength|float $max, LengthUnit|int $unit = null): static
     {
-        return new self(max($this->value, $max->getValue($this->unit)), $this->unit);
+        $max = $max instanceof AbstractLength ? $max : new static($max, $unit);
+        return new static(max($this->value, $max->getValue($this->unit)), $this->unit);
     }
 }
