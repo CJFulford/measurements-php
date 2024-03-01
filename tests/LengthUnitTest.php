@@ -46,4 +46,87 @@ final class LengthUnitTest extends TestCase
             LengthUnit::getBySymbol($first->symbol)
         );
     }
+
+    public function testCustomUnitCreation(): void
+    {
+        $unit1 = new LengthUnit(
+            id          : 23,
+            baseUnitsPer: 43,
+            name        : 'test4',
+            pluralName  : 'test4s',
+            acronym     : 't4',
+            symbol      : '!'
+        );
+        $this->assertSame($unit1, LengthUnit::getById(23));
+        $this->assertSame($unit1, LengthUnit::getByAcronym('t4'));
+        $this->assertSame($unit1, LengthUnit::getBySymbol('!'));
+
+        $unit2 = new LengthUnit(
+            id          : 24,
+            baseUnitsPer: 44,
+            name        : 'test5',
+            pluralName  : 'test5s',
+            acronym     : 't5',
+            symbol      : '@'
+        );
+        $this->assertSame($unit2, LengthUnit::getById(24));
+        $this->assertSame($unit2, LengthUnit::getByAcronym('t5'));
+        $this->assertSame($unit2, LengthUnit::getBySymbol('@'));
+
+        // test that adding a duplicate in any way fails
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 20,
+            baseUnitsPer: 21,
+            name        : 'test3',
+            pluralName  : 'test3s',
+            acronym     : 't3',
+            symbol      : 't3'
+        );
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 21,
+            baseUnitsPer: 20,
+            name        : 'test3',
+            pluralName  : 'test3s',
+            acronym     : 't3',
+            symbol      : 't3'
+        );
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 21,
+            baseUnitsPer: 21,
+            name        : 'test1',
+            pluralName  : 'test3s',
+            acronym     : 't3',
+            symbol      : 't3'
+        );
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 21,
+            baseUnitsPer: 21,
+            name        : 'test3',
+            pluralName  : 'test1s',
+            acronym     : 't3',
+            symbol      : 't3'
+        );
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 21,
+            baseUnitsPer: 21,
+            name        : 'test3',
+            pluralName  : 'test3s',
+            acronym     : 't1',
+            symbol      : 't3'
+        );
+        $this->expectException(InvalidArgumentException::class);
+        new LengthUnit(
+            id          : 21,
+            baseUnitsPer: 21,
+            name        : 'test3',
+            pluralName  : 'test3s',
+            acronym     : 't3',
+            symbol      : 't1'
+        );
+    }
 }
