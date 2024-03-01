@@ -23,7 +23,7 @@ class LengthUnit extends Unit
 
         new self(
             id          : self::KILOMETRE,
-            baseUnitsPer: 10e3,
+            baseUnitsPer: 1000,
             name        : 'kilometre',
             pluralName  : 'kilometres',
             acronym     : 'km',
@@ -31,7 +31,7 @@ class LengthUnit extends Unit
         );
         new self(
             id          : self::METRE,
-            baseUnitsPer: 10e0,
+            baseUnitsPer: 1,
             name        : 'metre',
             pluralName  : 'metres',
             acronym     : 'm',
@@ -39,7 +39,7 @@ class LengthUnit extends Unit
         );
         new self(
             id          : self::CENTIMETRE,
-            baseUnitsPer: 10e-2,
+            baseUnitsPer: 0.01,
             name        : 'centimetre',
             pluralName  : 'centimetres',
             acronym     : 'cm',
@@ -47,7 +47,7 @@ class LengthUnit extends Unit
         );
         new self(
             id          : self::MILLIMETRE,
-            baseUnitsPer: 10e-3,
+            baseUnitsPer: 0.001,
             name        : 'millimetre',
             pluralName  : 'millimetres',
             acronym     : 'mm',
