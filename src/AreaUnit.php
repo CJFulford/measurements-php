@@ -62,57 +62,57 @@ class AreaUnit extends Unit
 
         new self(
             id                       : self::SQUARE_KILOMETRE,
-            name                     : 'kilometre',
-            pluralName               : 'kilometres',
+            name                     : 'square kilometre',
+            pluralName               : 'square kilometres',
             acronym                  : 'km²',
             correspondingLengthUnitId: LengthUnit::KILOMETRE
         );
         new self(
             id                       : self::SQUARE_METRE,
-            name                     : 'metre',
-            pluralName               : 'metres',
+            name                     : 'square metre',
+            pluralName               : 'square metres',
             acronym                  : 'm²',
             correspondingLengthUnitId: LengthUnit::METRE
         );
         new self(
             id                       : self::SQUARE_CENTIMETRE,
-            name                     : 'centimetre',
-            pluralName               : 'centimetres',
+            name                     : 'square centimetre',
+            pluralName               : 'square centimetres',
             acronym                  : 'cm²',
             correspondingLengthUnitId: LengthUnit::CENTIMETRE
         );
         new self(
             id                       : self::SQUARE_MILLIMETRE,
-            name                     : 'millimetre',
-            pluralName               : 'millimetres',
+            name                     : 'square millimetre',
+            pluralName               : 'square millimetres',
             acronym                  : 'mm²',
             correspondingLengthUnitId: LengthUnit::MILLIMETRE
         );
         new self(
             id                       : self::SQUARE_INCH,
-            name                     : 'inch',
-            pluralName               : 'inches',
+            name                     : 'square inch',
+            pluralName               : 'square inches',
             acronym                  : 'in²',
             correspondingLengthUnitId: LengthUnit::INCH
         );
         new self(
             id                       : self::SQUARE_FOOT,
-            name                     : 'foot',
-            pluralName               : 'feet',
+            name                     : 'square foot',
+            pluralName               : 'square feet',
             acronym                  : 'ft²',
             correspondingLengthUnitId: LengthUnit::FOOT
         );
         new self(
             id                       : self::SQUARE_YARD,
-            name                     : 'yard',
-            pluralName               : 'yards',
+            name                     : 'square yard',
+            pluralName               : 'square yards',
             acronym                  : 'yd²',
             correspondingLengthUnitId: LengthUnit::YARD
         );
         new self(
             id                       : self::SQUARE_MILE,
-            name                     : 'mile',
-            pluralName               : 'miles',
+            name                     : 'square mile',
+            pluralName               : 'square miles',
             acronym                  : 'mi²',
             correspondingLengthUnitId: LengthUnit::MILE
         );
