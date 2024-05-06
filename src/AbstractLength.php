@@ -30,6 +30,46 @@ abstract class AbstractLength
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
+    final public function kilometres(): float
+    {
+        return $this->getValue(LengthUnit::KILOMETRE);
+    }
+
+    final public function metres(): float
+    {
+        return $this->getValue(LengthUnit::METRE);
+    }
+
+    final public function centimetres(): float
+    {
+        return $this->getValue(LengthUnit::CENTIMETRE);
+    }
+
+    final public function millimetres(): float
+    {
+        return $this->getValue(LengthUnit::MILLIMETRE);
+    }
+
+    final public function inches(): float
+    {
+        return $this->getValue(LengthUnit::INCH);
+    }
+
+    final public function feet(): float
+    {
+        return $this->getValue(LengthUnit::FOOT);
+    }
+
+    final public function yards(): float
+    {
+        return $this->getValue(LengthUnit::YARD);
+    }
+
+    final public function miles(): float
+    {
+        return $this->getValue(LengthUnit::MILE);
+    }
+
     abstract public function add(self|float $length, LengthUnit|int $unit = null): static;
 
     abstract public function sub(self|float $length, LengthUnit|int $unit = null): static;

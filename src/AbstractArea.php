@@ -31,6 +31,46 @@ abstract class AbstractArea
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
+    final public function squareKilometres(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_KILOMETRE);
+    }
+
+    final public function squareMetres(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_METRE);
+    }
+
+    final public function squareCentimetres(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_CENTIMETRE);
+    }
+
+    final public function squareMillimetres(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_MILLIMETRE);
+    }
+
+    final public function squareInches(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_INCH);
+    }
+
+    final public function squareFeet(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_FOOT);
+    }
+
+    final public function squareYards(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_YARD);
+    }
+
+    final public function squareMiles(): float
+    {
+        return $this->getValue(AreaUnit::SQUARE_MILE);
+    }
+
     abstract public function add(self|float $area, AreaUnit|int $unit = null): static;
 
     abstract public function sub(self|float $area, AreaUnit|int $unit = null): static;
