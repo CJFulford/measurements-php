@@ -6,7 +6,7 @@ The measurements-php library provides functionality for handling measurements, p
 ## Installation
 You can install the measurements-php library via Composer. Run the following command in your terminal:
 
-composer require cjful/measurements-php
+`composer require cjfulford/measurements-php`
 
 ## Usage
 ### Length
