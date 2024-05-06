@@ -30,7 +30,7 @@ class Length extends AbstractLength
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new Area(
-            $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
+            $this->metres() * $length->metres(),
             AreaUnit::SQUARE_METRE
         );
     }

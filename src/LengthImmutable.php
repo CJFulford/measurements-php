@@ -26,10 +26,7 @@ class LengthImmutable extends AbstractLength
     public function mulByLength(AbstractLength|float $length, LengthUnit|int $unit = null): AreaImmutable
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
-        return new AreaImmutable(
-            $this->getValue(LengthUnit::METRE) * $length->getValue(LengthUnit::METRE),
-            AreaUnit::SQUARE_METRE
-        );
+        return new AreaImmutable($this->metres() * $length->metres(), AreaUnit::SQUARE_METRE);
     }
 
     public function divByNumber(float $number): static

@@ -15,46 +15,46 @@ final class AreaTest extends TestCase
     public function testGetValue(): void
     {
         $area = new Area(1, AreaUnit::SQUARE_KILOMETRE);
-        $this->assertEquals(1, $area->getValue(AreaUnit::SQUARE_KILOMETRE));
-        $this->assertEquals(1000000, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(1, $area->squareKilometres());
+        $this->assertEquals(1000000, $area->squareMetres());
     }
 
     public function testAddition(): void
     {
         $area = new Area(1, AreaUnit::SQUARE_METRE);
         $area->add(new Area(1, AreaUnit::SQUARE_METRE));
-        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->squareMetres());
 
         // now without a second instance
         $area = new Area(1, AreaUnit::SQUARE_METRE);
         $area->add(1, AreaUnit::SQUARE_METRE);
-        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->squareMetres());
     }
 
     public function testSubtraction(): void
     {
         $area = new Area(5, AreaUnit::SQUARE_METRE);
         $area->sub(new Area(3, AreaUnit::SQUARE_METRE));
-        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->squareMetres());
 
         // now without a second instance
         $area = new Area(5, AreaUnit::SQUARE_METRE);
         $area->sub(3, AreaUnit::SQUARE_METRE);
-        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->squareMetres());
     }
 
     public function testMultiplication(): void
     {
         $area = new Area(3, AreaUnit::SQUARE_METRE);
         $area->mulByNumber(3);
-        $this->assertEquals(9, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(9, $area->squareMetres());
     }
 
     public function testDivisionByNumber(): void
     {
         $area = new Area(10, AreaUnit::SQUARE_METRE);
         $area->divByNumber(5);
-        $this->assertEquals(2, $area->getValue(AreaUnit::SQUARE_METRE));
+        $this->assertEquals(2, $area->squareMetres());
     }
 
     public function testDivisionByLength(): void
@@ -62,12 +62,12 @@ final class AreaTest extends TestCase
         $area   = new Area(10, AreaUnit::SQUARE_METRE);
         $length = new Cjfulford\Measurements\Length(5, Cjfulford\Measurements\LengthUnit::METRE);
         $length = $area->divByLength($length);
-        $this->assertEquals(2, $length->getValue(Cjfulford\Measurements\LengthUnit::METRE));
+        $this->assertEquals(2, $length->metres());
 
         // now without a second instance
         $area   = new Area(10, AreaUnit::SQUARE_METRE);
         $length = $area->divByLength(5, Cjfulford\Measurements\LengthUnit::METRE);
-        $this->assertEquals(2, $length->getValue(Cjfulford\Measurements\LengthUnit::METRE));
+        $this->assertEquals(2, $length->metres());
     }
 
     public function testDivisionByArea(): void
