@@ -1,5 +1,6 @@
 <?php
 
+use Cjfulford\Measurements\Area;
 use Cjfulford\Measurements\AreaUnit;
 use Cjfulford\Measurements\Length;
 use Cjfulford\Measurements\LengthUnit;
@@ -386,5 +387,11 @@ final class LengthTest extends TestCase
         $this->assertFalse($length3->isGreaterThanOrEqualTo($length1), 6);
         $this->assertTrue($length2->isGreaterThanOrEqualTo(10, LengthUnit::METRE), 7);
         $this->assertFalse($length3->isGreaterThanOrEqualTo(10, LengthUnit::METRE), 8);
+    }
+
+    public function testFormatting(): void
+    {
+        $length = new Length(10, LengthUnit::METRE);
+        $this->assertEquals('10.00000m', $length->format(LengthUnit::METRE, 5));
     }
 }
