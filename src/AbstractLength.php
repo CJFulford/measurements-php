@@ -164,6 +164,6 @@ abstract class AbstractLength
 
     final public function format(LengthUnit|int $unit, int $decimals = 0, Format $format = Format::SYMBOL): string
     {
-        return $format->formatLength($this, $unit, $decimals);
+        return $format->formatLength($this, $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit), $decimals);
     }
 }
