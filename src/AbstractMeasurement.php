@@ -26,4 +26,12 @@ abstract class AbstractMeasurement
     {
         return !$this->isZero();
     }
+
+    final public function isGreaterThanZero() : bool {
+        return $this->value > 0;
+    }
+
+    final public function isLessThanZero() : bool {
+        return $this->value < 0;
+    }
 }
