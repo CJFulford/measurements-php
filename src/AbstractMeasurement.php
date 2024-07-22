@@ -16,4 +16,14 @@ abstract class AbstractMeasurement
     abstract public function mulByNumber(float $number): static;
 
     abstract public function divByNumber(float $number): static;
+
+    final public function isZero(): bool
+    {
+        return floatsEqual($this->value, 0);
+    }
+
+    final public function isNotZero(): bool
+    {
+        return !$this->isZero();
+    }
 }
