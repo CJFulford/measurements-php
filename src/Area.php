@@ -2,7 +2,7 @@
 
 namespace Cjfulford\Measurements;
 
-class Area extends AbstractArea
+class Area extends AbstractArea implements Mutable
 {
     public function add(AbstractArea|float $area, AreaUnit|int $unit = null): static
     {
@@ -35,5 +35,10 @@ class Area extends AbstractArea
         $length     = $length instanceof AbstractLength ? $length : new Length($length, $unit);
         $lengthUnit = $this->unit->correspondingLengthUnit;
         return new Length($this->value / $length->getValue($lengthUnit), $lengthUnit);
+    }
+
+    public function toImmutable(): AreaImmutable
+    {
+        return new AreaImmutable($this->value, $this->unit);
     }
 }

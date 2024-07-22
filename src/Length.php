@@ -4,7 +4,7 @@ namespace Cjfulford\Measurements;
 
 use Exception;
 
-class Length extends AbstractLength
+class Length extends AbstractLength implements Mutable
 {
     public function add(AbstractLength|float $length, LengthUnit|int $unit = null): static
     {
@@ -100,5 +100,10 @@ class Length extends AbstractLength
         $max         = $max instanceof AbstractLength ? $max : new static($max, $unit);
         $this->value = max($this->value, $max->getValue($this->unit));
         return $this;
+    }
+
+    public function toImmutable(): LengthImmutable
+    {
+        return new LengthImmutable($this->value, $this->unit);
     }
 }
