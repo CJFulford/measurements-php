@@ -8,9 +8,8 @@ use function Cjfulford\Measurements\Helpers\floatsEqual;
 
 require_once 'Helpers.php';
 
-abstract class AbstractLength
+abstract class AbstractLength extends AbstractMeasurement
 {
-    protected float      $value;
     protected LengthUnit $unit;
 
     /**
@@ -20,7 +19,7 @@ abstract class AbstractLength
      */
     final public function __construct(float $value, LengthUnit|int $unit)
     {
-        $this->value = $value;
+        parent::__construct($value);
         $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
     }
 
@@ -74,11 +73,7 @@ abstract class AbstractLength
 
     abstract public function sub(self|float $length, LengthUnit|int $unit = null): static;
 
-    abstract public function mulByNumber(float $number): static;
-
     abstract public function mulByLength(self|float $length, LengthUnit|int $unit = null): AbstractArea;
-
-    abstract public function divByNumber(float $number): static;
 
     final public function divByLength(self|float $length, LengthUnit|int $unit = null): float
     {
