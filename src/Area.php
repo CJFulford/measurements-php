@@ -41,4 +41,9 @@ class Area extends AbstractArea implements Mutable
     {
         return new AreaImmutable($this->value, $this->unit);
     }
+
+    public static function zero(): static
+    {
+        return new self(0, AreaUnit::SQUARE_METRE);
+    }
 }

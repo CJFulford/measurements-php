@@ -106,4 +106,9 @@ class Length extends AbstractLength implements Mutable
     {
         return new LengthImmutable($this->value, $this->unit);
     }
+
+    public static function zero(): static
+    {
+        return new self(0, LengthUnit::METRE);
+    }
 }

@@ -42,4 +42,6 @@ abstract class AbstractMeasurement
     final public function isLessThanOrEqualToZero() : bool {
         return $this->value <= 0;
     }
+
+    abstract public static function zero(): static;
 }
