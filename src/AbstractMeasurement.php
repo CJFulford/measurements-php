@@ -44,4 +44,8 @@ abstract class AbstractMeasurement
     }
 
     abstract public static function zero(): static;
+
+    abstract public function toImmutable(): self;
+
+    abstract public function toMutable(): self;
 }
