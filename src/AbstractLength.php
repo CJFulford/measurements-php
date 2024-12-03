@@ -20,7 +20,7 @@ abstract class AbstractLength extends AbstractMeasurement
     final public function __construct(float $value, LengthUnit|int $unit)
     {
         parent::__construct($value);
-        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
+        $this->unit = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
     }
 
     final public function getValue(LengthUnit|int $unit): float
@@ -114,8 +114,8 @@ abstract class AbstractLength extends AbstractMeasurement
     abstract public function max(self|float $max, LengthUnit|int $unit = null): static;
 
     final public function clamp(
-        self|float     $min,
-        self|float     $max,
+        self|float $min,
+        self|float $max,
         LengthUnit|int $minUnit = null,
         LengthUnit|int $maxUnit = null
     ): static {
@@ -133,7 +133,7 @@ abstract class AbstractLength extends AbstractMeasurement
     {
         return $length instanceof self
             ? $this->value < $length->getValue($this->unit)
-            : $this->isLessThan(new static($length, $unit));;
+            : $this->isLessThan(new static($length, $unit));
     }
 
     final public function isLessThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
@@ -159,6 +159,10 @@ abstract class AbstractLength extends AbstractMeasurement
 
     final public function format(LengthUnit|int $unit, int $decimals = 0, Format $format = Format::SYMBOL): string
     {
-        return $format->formatLength($this, $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit), $decimals);
+        return $format->formatLength(
+            $this,
+            $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit),
+            $decimals
+        );
     }
 }
