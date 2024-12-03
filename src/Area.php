@@ -37,15 +37,6 @@ class Area extends AbstractArea
         return new Length($this->value / $length->getValue($lengthUnit), $lengthUnit);
     }
 
-    public function toImmutable(): AreaImmutable
-    {
-        return new AreaImmutable($this->value, $this->unit);
-    }
-
-    public function toMutable(): Area
-    {
-        return new Area($this->value, $this->unit);
-    }
 
     public static function zero(): static
     {

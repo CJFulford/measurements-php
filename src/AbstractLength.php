@@ -165,4 +165,14 @@ abstract class AbstractLength extends AbstractMeasurement
             $decimals
         );
     }
+
+    final public function toImmutable(): LengthImmutable
+    {
+        return new LengthImmutable($this->value, $this->unit);
+    }
+
+    final public function toMutable(): Length
+    {
+        return new Length($this->value, $this->unit);
+    }
 }

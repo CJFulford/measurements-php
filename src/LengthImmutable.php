@@ -86,16 +86,6 @@ class LengthImmutable extends AbstractLength
         return new static(max($this->value, $max->getValue($this->unit)), $this->unit);
     }
 
-    public function toImmutable(): LengthImmutable
-    {
-     return $this;
-    }
-
-    public function toMutable(): Length
-    {
-        return new Length($this->value, $this->unit);
-    }
-
     public static function zero(): static
     {
         return new static(0, LengthUnit::METRE);

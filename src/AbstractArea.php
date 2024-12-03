@@ -21,7 +21,7 @@ abstract class AbstractArea extends AbstractMeasurement
     final public function __construct(float $value, AreaUnit|int $unit)
     {
         parent::__construct($value);
-        $this->unit  = $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit);
+        $this->unit = $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit);
     }
 
     final public function getValue(AreaUnit|int $unit): float
@@ -119,5 +119,15 @@ abstract class AbstractArea extends AbstractMeasurement
     final public function format(AreaUnit|int $unit, int $decimals, Format $format = Format::ACRONYM): string
     {
         return $format->formatArea($this, $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit), $decimals);
+    }
+
+    final public function toImmutable(): AreaImmutable
+    {
+        return new AreaImmutable($this->value, $this->unit);
+    }
+
+    final public function toMutable(): Area
+    {
+        return new Area($this->value, $this->unit);
     }
 }
