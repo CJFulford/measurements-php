@@ -33,7 +33,7 @@ class AreaImmutable extends AbstractArea
         return new LengthImmutable($this->value / $length->getValue($lengthUnit), $lengthUnit);
     }
 
-    public function toImmutable(): AbstractMeasurement
+    public function toImmutable(): AreaImmutable
     {
         return $this;
     }

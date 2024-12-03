@@ -107,7 +107,7 @@ class Length extends AbstractLength
         return new LengthImmutable($this->value, $this->unit);
     }
 
-    public function toMutable(): AbstractMeasurement
+    public function toMutable(): Length
     {
         return new Length($this->value, $this->unit);
     }

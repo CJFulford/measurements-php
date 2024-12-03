@@ -42,7 +42,7 @@ class Area extends AbstractArea
         return new AreaImmutable($this->value, $this->unit);
     }
 
-    public function toMutable(): AbstractMeasurement
+    public function toMutable(): Area
     {
         return new Area($this->value, $this->unit);
     }

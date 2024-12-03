@@ -6,7 +6,7 @@ use function Cjfulford\Measurements\Helpers\floatsEqual;
 
 abstract class AbstractMeasurement
 {
-    protected float    $value;
+    protected float $value;
 
     public function __construct(float $value)
     {
@@ -27,25 +27,25 @@ abstract class AbstractMeasurement
         return !$this->isZero();
     }
 
-    final public function isGreaterThanZero() : bool {
+    final public function isGreaterThanZero(): bool
+    {
         return $this->value > 0;
     }
 
-    final public function isGreaterThanOrEqualToZero() : bool {
+    final public function isGreaterThanOrEqualToZero(): bool
+    {
         return $this->value >= 0;
     }
 
-    final public function isLessThanZero() : bool {
+    final public function isLessThanZero(): bool
+    {
         return $this->value < 0;
     }
 
-    final public function isLessThanOrEqualToZero() : bool {
+    final public function isLessThanOrEqualToZero(): bool
+    {
         return $this->value <= 0;
     }
 
     abstract public static function zero(): static;
-
-    abstract public function toImmutable(): self;
-
-    abstract public function toMutable(): self;
 }

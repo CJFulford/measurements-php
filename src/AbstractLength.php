@@ -114,8 +114,8 @@ abstract class AbstractLength extends AbstractMeasurement
     abstract public function max(self|float $max, LengthUnit|int $unit = null): static;
 
     final public function clamp(
-        self|float $min,
-        self|float $max,
+        self|float     $min,
+        self|float     $max,
         LengthUnit|int $minUnit = null,
         LengthUnit|int $maxUnit = null
     ): static {
