@@ -166,6 +166,51 @@ abstract class AbstractLength extends AbstractMeasurement
         );
     }
 
+    /**
+     * @param array<LengthUnit|int> $units
+     * @param int $decimals
+     * @param Format $format
+     * @param string $separator
+     * @return string
+     * @throws Exception
+     */
+    final public function multiFormat(
+        array  $units,
+        int    $decimals,
+        Format $format = Format::SYMBOL,
+        string $separator = ','
+    ): string {
+        // Sort units so that the largest unit is first
+        usort($units, function (LengthUnit|int $a, LengthUnit|int $b) {
+            $a = $a instanceof LengthUnit ? $a : LengthUnit::getById($a);
+            $b = $b instanceof LengthUnit ? $b : LengthUnit::getById($b);
+            return $b->baseUnitsPer <=> $a->baseUnitsPer;
+        });
+
+        $result    = [];
+        $remaining = new LengthImmutable($this->value, $this->unit);
+        foreach ($units as $i => $unit) {
+            $isLastUnit = $i === count($units) - 1;
+
+            if ($isLastUnit) {
+                $portion         = $remaining;
+                $portionDecimals = $decimals;
+            } else {
+                $portion         = new LengthImmutable(floor($remaining->getValue($unit)), $unit);
+                $portionDecimals = 0;
+                $remaining       = $remaining->sub($portion);
+
+                if ($portion->isZero()) {
+                    continue;
+                }
+            }
+
+            $result[] = $portion->format($unit, $portionDecimals, $format);
+        }
+
+        return implode($separator, $result);
+    }
+
     final public function toImmutable(): LengthImmutable
     {
         return new LengthImmutable($this->value, $this->unit);

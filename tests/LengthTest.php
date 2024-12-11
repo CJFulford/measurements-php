@@ -1,7 +1,5 @@
 <?php
 
-use Cjfulford\Measurements\Area;
-use Cjfulford\Measurements\AreaUnit;
 use Cjfulford\Measurements\Length;
 use Cjfulford\Measurements\LengthUnit;
 use PHPUnit\Framework\TestCase;
@@ -393,5 +391,45 @@ final class LengthTest extends TestCase
     {
         $length = new Length(10, LengthUnit::METRE);
         $this->assertEquals('10.00000m', $length->format(LengthUnit::METRE, 5));
+    }
+
+    public function testBasicMultiFormatting(): void
+    {
+        // basic case
+        $length = new Length(10.5, LengthUnit::FOOT);
+        $this->assertEquals("10',6.00\"", $length->multiFormat([LengthUnit::FOOT, LengthUnit::INCH], 2));
+    }
+
+    public function testMultiFormattingWhereFirstUnitIsNotNeeded(): void
+    {
+        // case where the first unit is not needed
+        $length = new Length(1.5, LengthUnit::FOOT);
+        $units  = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
+        $this->assertEquals("1',6.00\"", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWhereMiddleUnitIsNotNeeded(): void
+    {
+        // case where the first unit is not needed
+        $length = new Length(1, LengthUnit::YARD);
+        $length = $length->add(1, LengthUnit::INCH);
+        $units  = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
+        $this->assertEquals("1yd,1.00\"", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWithOutOfOrderUnits(): void
+    {
+        // case where the units are not in order
+        $length = new Length(10.5, LengthUnit::FOOT);
+        $units  = [LengthUnit::INCH, LengthUnit::FOOT, LengthUnit::YARD];
+        $this->assertEquals("3yd,1',6.00\"", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWithZeroLastUnit(): void
+    {
+        // case where the last unit is zero
+        $length = new Length(10, LengthUnit::FOOT);
+        $units  = [LengthUnit::FOOT, LengthUnit::INCH];
+        $this->assertEquals("10',0.00\"", $length->multiFormat($units, 2));
     }
 }
