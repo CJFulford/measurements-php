@@ -4,14 +4,14 @@ namespace Cjfulford\Measurements;
 
 class Area extends AbstractArea
 {
-    public function add(AbstractArea|float $area, AreaUnit|int $unit = null): static
+    public function add(AbstractArea|float $area, AreaUnit|int|null $unit = null): static
     {
         $area        = $area instanceof AbstractArea ? $area : new static($area, $unit);
         $this->value += $area->getValue($this->unit);
         return $this;
     }
 
-    public function sub(AbstractArea|float $area, AreaUnit|int $unit = null): static
+    public function sub(AbstractArea|float $area, AreaUnit|int|null $unit = null): static
     {
         $area        = $area instanceof AbstractArea ? $area : new static($area, $unit);
         $this->value -= $area->getValue($this->unit);
@@ -30,7 +30,7 @@ class Area extends AbstractArea
         return $this;
     }
 
-    public function divByLength(AbstractLength|float $length, LengthUnit|int $unit = null): Length
+    public function divByLength(AbstractLength|float $length, LengthUnit|int|null $unit = null): Length
     {
         $length     = $length instanceof AbstractLength ? $length : new Length($length, $unit);
         $lengthUnit = $this->unit->correspondingLengthUnit;

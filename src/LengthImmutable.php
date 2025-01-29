@@ -6,13 +6,13 @@ use Exception;
 
 class LengthImmutable extends AbstractLength
 {
-    public function add(AbstractLength|float $length, LengthUnit|int $unit = null): static
+    public function add(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new static($this->value + $length->getValue($this->unit), $this->unit);
     }
 
-    public function sub(AbstractLength|float $length, LengthUnit|int $unit = null): static
+    public function sub(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new static($this->value - $length->getValue($this->unit), $this->unit);
@@ -23,7 +23,7 @@ class LengthImmutable extends AbstractLength
         return new static($this->value * $number, $this->unit);
     }
 
-    public function mulByLength(AbstractLength|float $length, LengthUnit|int $unit = null): AreaImmutable
+    public function mulByLength(AbstractLength|float $length, LengthUnit|int|null $unit = null): AreaImmutable
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new AreaImmutable($this->metres() * $length->metres(), AreaUnit::SQUARE_METRE);
@@ -68,19 +68,19 @@ class LengthImmutable extends AbstractLength
         return new static(round($this->getValue($unit), $precision), $unit);
     }
 
-    public function modulo(AbstractLength|float $length, LengthUnit|int $unit = null): static
+    public function modulo(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
         $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         return new static($this->value % $length->getValue($this->unit), $this->unit);
     }
 
-    public function min(AbstractLength|float $min, LengthUnit|int $unit = null): static
+    public function min(AbstractLength|float $min, LengthUnit|int|null $unit = null): static
     {
         $min = $min instanceof AbstractLength ? $min : new static($min, $unit);
         return new static(min($this->value, $min->getValue($this->unit)), $this->unit);
     }
 
-    public function max(AbstractLength|float $max, LengthUnit|int $unit = null): static
+    public function max(AbstractLength|float $max, LengthUnit|int|null $unit = null): static
     {
         $max = $max instanceof AbstractLength ? $max : new static($max, $unit);
         return new static(max($this->value, $max->getValue($this->unit)), $this->unit);

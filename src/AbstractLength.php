@@ -69,13 +69,13 @@ abstract class AbstractLength extends AbstractMeasurement
         return $this->getValue(LengthUnit::MILE);
     }
 
-    abstract public function add(self|float $length, LengthUnit|int $unit = null): static;
+    abstract public function add(self|float $length, LengthUnit|int|null $unit = null): static;
 
-    abstract public function sub(self|float $length, LengthUnit|int $unit = null): static;
+    abstract public function sub(self|float $length, LengthUnit|int|null $unit = null): static;
 
-    abstract public function mulByLength(self|float $length, LengthUnit|int $unit = null): AbstractArea;
+    abstract public function mulByLength(self|float $length, LengthUnit|int|null $unit = null): AbstractArea;
 
-    final public function divByLength(self|float $length, LengthUnit|int $unit = null): float
+    final public function divByLength(self|float $length, LengthUnit|int|null $unit = null): float
     {
         return $length instanceof self
             ? $this->value / $length->getValue($this->unit)
@@ -107,31 +107,31 @@ abstract class AbstractLength extends AbstractMeasurement
      */
     abstract public function round(LengthUnit|int $unit, int $precision = 0): static;
 
-    abstract public function modulo(self|float $length, LengthUnit|int $unit = null): static;
+    abstract public function modulo(self|float $length, LengthUnit|int|null $unit = null): static;
 
-    abstract public function min(self|float $min, LengthUnit|int $unit = null): static;
+    abstract public function min(self|float $min, LengthUnit|int|null $unit = null): static;
 
-    abstract public function max(self|float $max, LengthUnit|int $unit = null): static;
+    abstract public function max(self|float $max, LengthUnit|int|null $unit = null): static;
 
     final public function clamp(
-        self|float     $min,
-        self|float     $max,
-        LengthUnit|int $minUnit = null,
-        LengthUnit|int $maxUnit = null
+        self|float          $min,
+        self|float          $max,
+        LengthUnit|int|null $minUnit = null,
+        LengthUnit|int|null $maxUnit = null
     ): static {
         return $this->max($min, $minUnit)->min($max, $maxUnit);
     }
 
     final public function isEqualTo(
-        self|float     $length,
-        LengthUnit|int $unit = null,
-        int            $precision = DEFAULT_PRECISION
+        self|float          $length,
+        LengthUnit|int|null $unit = null,
+        int                 $precision = DEFAULT_PRECISION
     ): bool {
         $length = $length instanceof self ? $length : new static($length, $unit);
         return floatsEqual($this->value, $length->getValue($this->unit), $precision);
     }
 
-    final public function isLessThan(self|float $length, LengthUnit|int $unit = null): bool
+    final public function isLessThan(self|float $length, LengthUnit|int|null $unit = null): bool
     {
         return $length instanceof self
             ? $this->value < $length->getValue($this->unit)
@@ -139,16 +139,16 @@ abstract class AbstractLength extends AbstractMeasurement
     }
 
     final public function isLessThanOrEqualTo(
-        self|float     $length,
-        LengthUnit|int $unit = null,
-        int            $precision = DEFAULT_PRECISION
+        self|float          $length,
+        LengthUnit|int|null $unit = null,
+        int                 $precision = DEFAULT_PRECISION
     ): bool {
         return $length instanceof self
             ? $this->isLessThan($length) || $this->isEqualTo($length, precision: $precision)
             : $this->isLessThanOrEqualTo(new static($length, $unit));
     }
 
-    final public function isGreaterThan(self|float $length, LengthUnit|int $unit = null): bool
+    final public function isGreaterThan(self|float $length, LengthUnit|int|null $unit = null): bool
     {
         return $length instanceof self
             ? $this->value > $length->getValue($this->unit)
@@ -156,9 +156,9 @@ abstract class AbstractLength extends AbstractMeasurement
     }
 
     final public function isGreaterThanOrEqualTo(
-        self|float     $length,
-        LengthUnit|int $unit = null,
-        int            $precision = DEFAULT_PRECISION
+        self|float          $length,
+        LengthUnit|int|null $unit = null,
+        int                 $precision = DEFAULT_PRECISION
     ): bool {
         return $length instanceof self
             ? $this->isGreaterThan($length) || $this->isEqualTo($length, precision: $precision)
