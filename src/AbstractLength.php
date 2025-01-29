@@ -139,7 +139,7 @@ abstract class AbstractLength extends AbstractMeasurement
     final public function isLessThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
     {
         return $length instanceof self
-            ? $this->value <= $length->getValue($this->unit)
+            ? $this->isLessThan($length) || $this->isEqualTo($length)
             : $this->isLessThanOrEqualTo(new static($length, $unit));
     }
 
@@ -153,7 +153,7 @@ abstract class AbstractLength extends AbstractMeasurement
     final public function isGreaterThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
     {
         return $length instanceof self
-            ? $this->value >= $length->getValue($this->unit)
+            ? $this->isGreaterThan($length) || $this->isEqualTo($length)
             : $this->isGreaterThanOrEqualTo(new static($length, $unit));
     }
 

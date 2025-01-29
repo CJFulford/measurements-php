@@ -98,7 +98,7 @@ abstract class AbstractArea extends AbstractMeasurement
     final public function isLessThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
     {
         return $area instanceof self
-            ? $this->value <= $area->getValue($this->unit)
+            ? $this->isLessThan($area) || $this->isEqualTo($area)
             : $this->isLessThanOrEqualTo(new static($area, $unit));
     }
 
@@ -112,7 +112,7 @@ abstract class AbstractArea extends AbstractMeasurement
     final public function isGreaterThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
     {
         return $area instanceof self
-            ? $this->value >= $area->getValue($this->unit)
+            ? $this->isGreaterThan($area) || $this->isEqualTo($area)
             : $this->isGreaterThanOrEqualTo(new static($area, $unit));
     }
 
