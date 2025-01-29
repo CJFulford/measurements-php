@@ -4,6 +4,8 @@ namespace Cjfulford\Measurements;
 
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 
+const DEFAULT_PRECISION = 5;
+
 abstract class AbstractMeasurement
 {
     protected float $value;

@@ -82,10 +82,13 @@ abstract class AbstractArea extends AbstractMeasurement
         return $this->value / $area->getValue($this->unit);
     }
 
-    final public function isEqualTo(self|float $area, AreaUnit|int $unit = null): bool
-    {
+    final public function isEqualTo(
+        self|float $area,
+        AreaUnit|int $unit = null,
+        int $precision = DEFAULT_PRECISION
+    ): bool {
         $area = $area instanceof self ? $area : new static($area, $unit);
-        return floatsEqual($this->value, $area->getValue($this->unit));
+        return floatsEqual($this->value, $area->getValue($this->unit), $precision);
     }
 
     final public function isLessThan(self|float $area, AreaUnit|int $unit = null): bool
@@ -95,10 +98,13 @@ abstract class AbstractArea extends AbstractMeasurement
             : $this->isLessThan(new static($area, $unit));
     }
 
-    final public function isLessThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
-    {
+    final public function isLessThanOrEqualTo(
+        self|float   $area,
+        AreaUnit|int $unit = null,
+        int          $precision = DEFAULT_PRECISION
+    ): bool {
         return $area instanceof self
-            ? $this->isLessThan($area) || $this->isEqualTo($area)
+            ? $this->isLessThan($area) || $this->isEqualTo($area, precision: $precision)
             : $this->isLessThanOrEqualTo(new static($area, $unit));
     }
 
@@ -109,10 +115,13 @@ abstract class AbstractArea extends AbstractMeasurement
             : $this->isGreaterThan(new static($area, $unit));
     }
 
-    final public function isGreaterThanOrEqualTo(self|float $area, AreaUnit|int $unit = null): bool
-    {
+    final public function isGreaterThanOrEqualTo(
+        self|float   $area,
+        AreaUnit|int $unit = null,
+        int          $precision = DEFAULT_PRECISION
+    ): bool {
         return $area instanceof self
-            ? $this->isGreaterThan($area) || $this->isEqualTo($area)
+            ? $this->isGreaterThan($area) || $this->isEqualTo($area, precision: $precision)
             : $this->isGreaterThanOrEqualTo(new static($area, $unit));
     }
 

@@ -122,11 +122,13 @@ abstract class AbstractLength extends AbstractMeasurement
         return $this->max($min, $minUnit)->min($max, $maxUnit);
     }
 
-    final public function isEqualTo(self|float $length, LengthUnit|int $unit = null): bool
-    {
-        return $length instanceof self
-            ? floatsEqual($this->value, $length->getValue($this->unit))
-            : $this->isEqualTo(new static($length, $unit));
+    final public function isEqualTo(
+        self|float     $length,
+        LengthUnit|int $unit = null,
+        int            $precision = DEFAULT_PRECISION
+    ): bool {
+        $length = $length instanceof self ? $length : new static($length, $unit);
+        return floatsEqual($this->value, $length->getValue($this->unit), $precision);
     }
 
     final public function isLessThan(self|float $length, LengthUnit|int $unit = null): bool
@@ -136,10 +138,13 @@ abstract class AbstractLength extends AbstractMeasurement
             : $this->isLessThan(new static($length, $unit));
     }
 
-    final public function isLessThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
-    {
+    final public function isLessThanOrEqualTo(
+        self|float     $length,
+        LengthUnit|int $unit = null,
+        int            $precision = DEFAULT_PRECISION
+    ): bool {
         return $length instanceof self
-            ? $this->isLessThan($length) || $this->isEqualTo($length)
+            ? $this->isLessThan($length) || $this->isEqualTo($length, precision: $precision)
             : $this->isLessThanOrEqualTo(new static($length, $unit));
     }
 
@@ -150,10 +155,13 @@ abstract class AbstractLength extends AbstractMeasurement
             : $this->isGreaterThan(new static($length, $unit));
     }
 
-    final public function isGreaterThanOrEqualTo(self|float $length, LengthUnit|int $unit = null): bool
-    {
+    final public function isGreaterThanOrEqualTo(
+        self|float     $length,
+        LengthUnit|int $unit = null,
+        int            $precision = DEFAULT_PRECISION
+    ): bool {
         return $length instanceof self
-            ? $this->isGreaterThan($length) || $this->isEqualTo($length)
+            ? $this->isGreaterThan($length) || $this->isEqualTo($length, precision: $precision)
             : $this->isGreaterThanOrEqualTo(new static($length, $unit));
     }
 
