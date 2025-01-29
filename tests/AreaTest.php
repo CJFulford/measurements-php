@@ -169,4 +169,45 @@ final class AreaTest extends TestCase
         $area = new Area(10, AreaUnit::SQUARE_METRE);
         $this->assertEquals('10.00000m²', $area->format(AreaUnit::SQUARE_METRE, 5));
     }
+
+    public function testBasicMultiFormatting(): void
+    {
+        // basic case
+        $length = new Area(10.5, AreaUnit::SQUARE_FOOT);
+        $this->assertEquals("10ft²,72.00in²", $length->multiFormat([AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH], 2));
+    }
+
+    public function testMultiFormattingWhereFirstUnitIsNotNeeded(): void
+    {
+        // case where the first unit is not needed
+        $length = new Area(1.5, AreaUnit::SQUARE_FOOT);
+        $units  = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $this->assertEquals("1ft²,72.00in²", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWhereMiddleUnitIsNotNeeded(): void
+    {
+        // case where the first unit is not needed
+        $length = new Area(1, AreaUnit::SQUARE_YARD);
+        $length = $length->add(1, AreaUnit::SQUARE_INCH);
+        $units  = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $this->assertEquals("1yd²,1.00in²", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWithOutOfOrderUnits(): void
+    {
+        // case where the units are not in order
+        $length = new Area(3, AreaUnit::SQUARE_YARD);
+        $length = $length->add(1.5, AreaUnit::SQUARE_FOOT);
+        $units  = [AreaUnit::SQUARE_INCH, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_YARD];
+        $this->assertEquals("3yd²,1ft²,72.00in²", $length->multiFormat($units, 2));
+    }
+
+    public function testMultiFormattingWithZeroLastUnit(): void
+    {
+        // case where the last unit is zero
+        $length = new Area(10, AreaUnit::SQUARE_FOOT);
+        $units  = [AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $this->assertEquals("10ft²,0.00in²", $length->multiFormat($units, 2));
+    }
 }

@@ -130,6 +130,51 @@ abstract class AbstractArea extends AbstractMeasurement
         return $format->formatArea($this, $unit instanceof AreaUnit ? $unit : AreaUnit::getById($unit), $decimals);
     }
 
+    /**
+     * @param array<AreaUnit|int> $units
+     * @param int $decimals
+     * @param Format $format
+     * @param string $separator
+     * @return string
+     * @throws Exception
+     */
+    final public function multiFormat(
+        array  $units,
+        int    $decimals,
+        Format $format = Format::ACRONYM,
+        string $separator = ','
+    ): string {
+        // Sort units so that the largest unit is first
+        usort($units, function (AreaUnit|int $a, AreaUnit|int $b) {
+            $a = $a instanceof AreaUnit ? $a : AreaUnit::getById($a);
+            $b = $b instanceof AreaUnit ? $b : AreaUnit::getById($b);
+            return $b->baseUnitsPer <=> $a->baseUnitsPer;
+        });
+
+        $result    = [];
+        $remaining = new AreaImmutable($this->value, $this->unit);
+        foreach ($units as $i => $unit) {
+            $isLastUnit = $i === count($units) - 1;
+
+            if ($isLastUnit) {
+                $portion         = $remaining;
+                $portionDecimals = $decimals;
+            } else {
+                $portion         = new AreaImmutable(floor($remaining->getValue($unit)), $unit);
+                $portionDecimals = 0;
+                $remaining       = $remaining->sub($portion);
+
+                if ($portion->isZero()) {
+                    continue;
+                }
+            }
+
+            $result[] = $portion->format($unit, $portionDecimals, $format);
+        }
+
+        return implode($separator, $result);
+    }
+
     final public function toImmutable(): AreaImmutable
     {
         return new AreaImmutable($this->value, $this->unit);
