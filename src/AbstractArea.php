@@ -94,6 +94,14 @@ abstract class AbstractArea extends AbstractMeasurement
         return floatsEqual($this->value, $area->getValue($this->unit), $precision);
     }
 
+    final public function isNotEqualTo(
+        self|float        $area,
+        AreaUnit|int|null $unit = null,
+        int               $precision = DEFAULT_PRECISION
+    ): bool {
+        return !$this->isEqualTo($area, $unit, $precision);
+    }
+
     final public function isLessThan(self|float $area, AreaUnit|int|null $unit = null): bool
     {
         return $area instanceof self

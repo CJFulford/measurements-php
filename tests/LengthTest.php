@@ -319,6 +319,28 @@ final class LengthTest extends TestCase
         $this->assertFalse($length->isEqualTo(500, LengthUnit::CENTIMETRE));
     }
 
+    public function testIsNotEqualTo(): void
+    {
+        $length = new Length(10, LengthUnit::METRE);
+        $this->assertFalse($length->isNotEqualTo(new Length(10, LengthUnit::METRE)));
+        $this->assertTrue($length->isNotEqualTo(new Length(5, LengthUnit::METRE)));
+
+        // now test with a different unit
+        $length = new Length(10, LengthUnit::METRE);
+        $this->assertFalse($length->isNotEqualTo(new Length(1000, LengthUnit::CENTIMETRE)));
+        $this->assertTrue($length->isNotEqualTo(new Length(500, LengthUnit::CENTIMETRE)));
+
+        // now without the second instance
+        $length = new Length(10, LengthUnit::METRE);
+        $this->assertFalse($length->isNotEqualTo(10, LengthUnit::METRE));
+        $this->assertTrue($length->isNotEqualTo(5, LengthUnit::METRE));
+
+        // now test with a different unit
+        $length = new Length(10, LengthUnit::METRE);
+        $this->assertFalse($length->isNotEqualTo(1000, LengthUnit::CENTIMETRE));
+        $this->assertTrue($length->isNotEqualTo(500, LengthUnit::CENTIMETRE));
+    }
+
     public function testIsLessThan(): void
     {
         $length1 = new Length(5, LengthUnit::METRE);

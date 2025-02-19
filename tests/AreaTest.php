@@ -92,6 +92,17 @@ final class AreaTest extends TestCase
         $this->assertTrue($area1->isEqualTo(100000, AreaUnit::SQUARE_CENTIMETRE));
     }
 
+    public function testNotEquality(): void
+    {
+        $area1 = new Area(10, AreaUnit::SQUARE_METRE);
+        $area2 = new Area(100, AreaUnit::SQUARE_METRE);
+        $area3 = new Area(1000000, AreaUnit::SQUARE_CENTIMETRE);
+        $this->assertTrue($area1->isNotEqualTo($area2));
+        $this->assertTrue($area1->isNotEqualTo($area3));
+        $this->assertTrue($area1->isNotEqualTo(100, AreaUnit::SQUARE_METRE));
+        $this->assertTrue($area1->isNotEqualTo(1000000, AreaUnit::SQUARE_CENTIMETRE));
+    }
+
     public function testLessThan(): void
     {
         $area1 = new Area(5, AreaUnit::SQUARE_METRE);

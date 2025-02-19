@@ -131,6 +131,14 @@ abstract class AbstractLength extends AbstractMeasurement
         return floatsEqual($this->value, $length->getValue($this->unit), $precision);
     }
 
+    final public function isNotEqualTo(
+        self|float          $length,
+        LengthUnit|int|null $unit = null,
+        int                 $precision = DEFAULT_PRECISION
+    ): bool {
+        return !$this->isEqualTo($length, $unit, $precision);
+    }
+
     final public function isLessThan(self|float $length, LengthUnit|int|null $unit = null): bool
     {
         return $length instanceof self
