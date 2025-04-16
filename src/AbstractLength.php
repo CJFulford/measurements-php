@@ -5,6 +5,8 @@ namespace Cjfulford\Measurements;
 use Exception;
 
 use function Cjfulford\Measurements\Helpers\floatsEqual;
+use function Cjfulford\Measurements\Helpers\floatsGreaterThan;
+use function Cjfulford\Measurements\Helpers\floatsLessThan;
 
 require_once 'Helpers.php';
 
@@ -142,7 +144,7 @@ abstract class AbstractLength extends AbstractMeasurement
     final public function isLessThan(self|float $length, LengthUnit|int|null $unit = null): bool
     {
         return $length instanceof self
-            ? $this->value < $length->getValue($this->unit)
+            ? floatsLessThan($this->value, $length->getValue($this->unit))
             : $this->isLessThan(new static($length, $unit));
     }
 
@@ -159,7 +161,7 @@ abstract class AbstractLength extends AbstractMeasurement
     final public function isGreaterThan(self|float $length, LengthUnit|int|null $unit = null): bool
     {
         return $length instanceof self
-            ? $this->value > $length->getValue($this->unit)
+            ? floatsGreaterThan($this->value, $length->getValue($this->unit))
             : $this->isGreaterThan(new static($length, $unit));
     }
 
