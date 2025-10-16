@@ -197,4 +197,9 @@ abstract class AbstractArea extends AbstractMeasurement
     {
         return new Area($this->value, $this->unit);
     }
+
+    final public function getUnit(): AreaUnit
+    {
+        return $this->unit;
+    }
 }

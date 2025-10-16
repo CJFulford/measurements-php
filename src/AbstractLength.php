@@ -238,4 +238,9 @@ abstract class AbstractLength extends AbstractMeasurement
     {
         return new Length($this->value, $this->unit);
     }
+
+    final public function getUnit(): LengthUnit
+    {
+        return $this->unit;
+    }
 }
