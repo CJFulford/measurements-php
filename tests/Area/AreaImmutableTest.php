@@ -43,12 +43,25 @@ final class AreaImmutableTest extends TestCase
         $this->assertEquals(2, $area4->squareMetres());
     }
 
-    public function testMultiplication(): void
+    public function testMultiplicationByNumber(): void
     {
         $area1 = new AreaImmutable(3, AreaUnit::SQUARE_METRE);
         $area2 = $area1->mulByNumber(3);
         $this->assertEquals(3, $area1->squareMetres());
         $this->assertEquals(9, $area2->squareMetres());
+    }
+
+    public function testMultiplicationByLength(): void
+    {
+        $area1 = new AreaImmutable(9, AreaUnit::SQUARE_METRE);
+        $volume1 = $area1->mulByLength(new Length(3, LengthUnit::METRE));
+        $this->assertEquals(9, $area1->squareMetres());
+        $this->assertEquals(27, $volume1->cubeMetres());
+
+        $area2 = new AreaImmutable(9, AreaUnit::SQUARE_METRE);
+        $volume2 = $area1->mulByLength(3, LengthUnit::METRE);
+        $this->assertEquals(9, $area2->squareMetres());
+        $this->assertEquals(27, $volume2->cubeMetres());
     }
 
     public function testDivisionByNumber(): void

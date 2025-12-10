@@ -47,11 +47,22 @@ final class AreaTest extends TestCase
         $this->assertEquals(2, $area->squareMetres());
     }
 
-    public function testMultiplication(): void
+    public function testMultiplicationByNumber(): void
     {
         $area = new Area(3, AreaUnit::SQUARE_METRE);
         $area->mulByNumber(3);
         $this->assertEquals(9, $area->squareMetres());
+    }
+
+    public function testMultiplicationByLength(): void
+    {
+        $area1 = new Area(9, AreaUnit::SQUARE_METRE);
+        $volume1 = $area1->mulByLength(new Length(3, LengthUnit::METRE));
+        $this->assertEquals(27, $volume1->cubeMetres());
+
+        $area2 = new Area(9, AreaUnit::SQUARE_METRE);
+        $volume2 = $area2->mulByLength(3, LengthUnit::METRE);
+        $this->assertEquals(27, $volume2->cubeMetres());
     }
 
     public function testDivisionByNumber(): void

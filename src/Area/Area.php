@@ -6,6 +6,9 @@ use Cjfulford\Measurements\Length\AbstractLength;
 use Cjfulford\Measurements\Length\Length;
 use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
+use Cjfulford\Measurements\Unit\VolumeUnit;
+use Cjfulford\Measurements\Volume\AbstractVolume;
+use Cjfulford\Measurements\Volume\Volume;
 
 class Area extends AbstractArea
 {
@@ -29,6 +32,12 @@ class Area extends AbstractArea
         return $this;
     }
 
+    public function mulByLength(float|AbstractLength $length, LengthUnit|int|null $unit = null): AbstractVolume
+    {
+        $length = $length instanceof AbstractLength ? $length : new Length($length, $unit);
+        return new Volume($this->squareMetres() * $length->metres(), VolumeUnit::CUBE_METRE);
+    }
+
     public function divByNumber(float $number): static
     {
         $this->value /= $number;
@@ -41,7 +50,6 @@ class Area extends AbstractArea
         $lengthUnit = $this->unit->correspondingLengthUnit;
         return new Length($this->value / $length->getValue($lengthUnit), $lengthUnit);
     }
-
 
     public static function zero(): static
     {

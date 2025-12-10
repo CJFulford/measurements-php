@@ -6,6 +6,9 @@ use Cjfulford\Measurements\Length\AbstractLength;
 use Cjfulford\Measurements\Length\LengthImmutable;
 use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
+use Cjfulford\Measurements\Unit\VolumeUnit;
+use Cjfulford\Measurements\Volume\AbstractVolume;
+use Cjfulford\Measurements\Volume\VolumeImmutable;
 
 class AreaImmutable extends AbstractArea
 {
@@ -24,6 +27,12 @@ class AreaImmutable extends AbstractArea
     public function mulByNumber(float $number): static
     {
         return new self($this->value * $number, $this->unit);
+    }
+
+    public function mulByLength(float|AbstractLength $length, LengthUnit|int|null $unit = null): AbstractVolume
+    {
+        $length = $length instanceof AbstractLength ? $length : new LengthImmutable($length, $unit);
+        return new VolumeImmutable($this->squareMetres() * $length->metres(), VolumeUnit::CUBE_METRE);
     }
 
     public function divByNumber(float $number): static
