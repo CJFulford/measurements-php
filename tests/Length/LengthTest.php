@@ -2,7 +2,9 @@
 
 namespace Length;
 
+use Cjfulford\Measurements\Area\Area;
 use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
@@ -62,6 +64,19 @@ final class LengthTest extends TestCase
         $length = new Length(3, LengthUnit::METRE);
         $area = $length->mulByLength(3, LengthUnit::METRE);
         $this->assertEquals(9, $area->squareMetres());
+    }
+
+    public function testMultiplicationByArea(): void
+    {
+        $length = new Length(3, LengthUnit::METRE);
+        $area = new Area(9, AreaUnit::SQUARE_METRE);
+        $volume = $length->mulByArea($area);
+        $this->assertEquals(27, $volume->cubeMetres());
+
+        // now without the second instance
+        $length = new Length(3, LengthUnit::METRE);
+        $volume = $length->mulByArea(9, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(27, $volume->cubeMetres());
     }
 
     public function testDivisionByNumber(): void

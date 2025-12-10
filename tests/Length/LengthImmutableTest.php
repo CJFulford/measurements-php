@@ -2,7 +2,9 @@
 
 namespace Length;
 
+use Cjfulford\Measurements\Area\Area;
 use Cjfulford\Measurements\Length\LengthImmutable;
+use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
@@ -47,6 +49,19 @@ final class LengthImmutableTest extends TestCase
         $length2 = $length1->mulByNumber(3);
         $this->assertEquals(3, $length1->metres());
         $this->assertEquals(9, $length2->metres());
+    }
+
+    public function testMultiplicationByArea(): void
+    {
+        $length = new LengthImmutable(3, LengthUnit::METRE);
+        $area = new Area(9, AreaUnit::SQUARE_METRE);
+        $volume = $length->mulByArea($area);
+        $this->assertEquals(27, $volume->cubeMetres());
+
+        // now without the second instance
+        $length = new LengthImmutable(3, LengthUnit::METRE);
+        $volume = $length->mulByArea(9, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(27, $volume->cubeMetres());
     }
 
     public function testDivisionByNumber(): void

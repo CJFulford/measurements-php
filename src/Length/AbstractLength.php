@@ -5,7 +5,9 @@ namespace Cjfulford\Measurements\Length;
 use Cjfulford\Measurements\AbstractMeasurement;
 use Cjfulford\Measurements\Area\AbstractArea;
 use Cjfulford\Measurements\Format;
+use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
+use Cjfulford\Measurements\Volume\AbstractVolume;
 use Exception;
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 use function Cjfulford\Measurements\Helpers\floatsGreaterThan;
@@ -80,6 +82,8 @@ abstract class AbstractLength extends AbstractMeasurement
     abstract public function sub(self|float $length, LengthUnit|int|null $unit = null): static;
 
     abstract public function mulByLength(self|float $length, LengthUnit|int|null $unit = null): AbstractArea;
+
+    abstract public function mulByArea(AbstractArea|float $area, AreaUnit|int|null $unit = null): AbstractVolume;
 
     final public function divByLength(self|float $length, LengthUnit|int|null $unit = null): float
     {
