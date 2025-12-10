@@ -3,6 +3,7 @@
 namespace Unit;
 
 use Cjfulford\Measurements\Unit\LengthUnit;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class LengthUnitTest extends TestCase

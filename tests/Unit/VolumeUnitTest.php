@@ -54,28 +54,28 @@ final class VolumeUnitTest extends TestCase
     public function testCustomUnitCreation(): void
     {
         $lengthUnit1 = new LengthUnit(
-            id: 20,
-            baseUnitsPer: 40,
-            name: 'test1',
-            pluralName: 'test1s',
-            acronym: 't1',
-            symbol: 't1'
+            id: 25,
+            baseUnitsPer: 45,
+            name: 'volume test 1',
+            pluralName: 'volume1s',
+            acronym: 'v1',
+            symbol: 'v1'
         );
         $lengthUnit2 = new LengthUnit(
-            id: 21,
-            baseUnitsPer: 41,
-            name: 'test2',
-            pluralName: 'test2s',
-            acronym: 't2',
-            symbol: 't2'
+            id: 26,
+            baseUnitsPer: 46,
+            name: 'volume test 2',
+            pluralName: 'volume2s',
+            acronym: 'v2',
+            symbol: 'v2'
         );
         $lengthUnit3 = new LengthUnit(
-            id: 22,
-            baseUnitsPer: 42,
-            name: 'test3',
-            pluralName: 'test3s',
-            acronym: 't3',
-            symbol: 't3'
+            id: 27,
+            baseUnitsPer: 47,
+            name: 'volume test 3',
+            pluralName: 'volume3s',
+            acronym: 'v3',
+            symbol: 'v3'
         );
 
         $unit1 = new VolumeUnit(
