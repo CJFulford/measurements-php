@@ -1,6 +1,6 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Unit;
 
 class LengthUnit extends Unit
 {

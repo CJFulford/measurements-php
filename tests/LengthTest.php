@@ -1,7 +1,7 @@
 <?php
 
-use Cjfulford\Measurements\Length;
-use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 final class LengthTest extends TestCase
@@ -53,12 +53,12 @@ final class LengthTest extends TestCase
     public function testMultiplicationByLength(): void
     {
         $length = new Length(3, LengthUnit::METRE);
-        $area   = $length->mulByLength(new Length(3, LengthUnit::METRE));
+        $area = $length->mulByLength(new Length(3, LengthUnit::METRE));
         $this->assertEquals(9, $area->squareMetres());
 
         // now without the second instance
         $length = new Length(3, LengthUnit::METRE);
-        $area   = $length->mulByLength(3, LengthUnit::METRE);
+        $area = $length->mulByLength(3, LengthUnit::METRE);
         $this->assertEquals(9, $area->squareMetres());
     }
 
@@ -426,7 +426,7 @@ final class LengthTest extends TestCase
     {
         // case where the first unit is not needed
         $length = new Length(1.5, LengthUnit::FOOT);
-        $units  = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
+        $units = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
         $this->assertEquals("1',6.00\"", $length->multiFormat($units, 2));
     }
 
@@ -435,7 +435,7 @@ final class LengthTest extends TestCase
         // case where the first unit is not needed
         $length = new Length(1, LengthUnit::YARD);
         $length = $length->add(1, LengthUnit::INCH);
-        $units  = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
+        $units = [LengthUnit::YARD, LengthUnit::FOOT, LengthUnit::INCH];
         $this->assertEquals("1yd,1.00\"", $length->multiFormat($units, 2));
     }
 
@@ -443,7 +443,7 @@ final class LengthTest extends TestCase
     {
         // case where the units are not in order
         $length = new Length(10.5, LengthUnit::FOOT);
-        $units  = [LengthUnit::INCH, LengthUnit::FOOT, LengthUnit::YARD];
+        $units = [LengthUnit::INCH, LengthUnit::FOOT, LengthUnit::YARD];
         $this->assertEquals("3yd,1',6.00\"", $length->multiFormat($units, 2));
     }
 
@@ -451,7 +451,7 @@ final class LengthTest extends TestCase
     {
         // case where the last unit is zero
         $length = new Length(10, LengthUnit::FOOT);
-        $units  = [LengthUnit::FOOT, LengthUnit::INCH];
+        $units = [LengthUnit::FOOT, LengthUnit::INCH];
         $this->assertEquals("10',0.00\"", $length->multiFormat($units, 2));
     }
 }

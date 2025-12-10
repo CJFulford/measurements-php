@@ -2,6 +2,11 @@
 
 namespace Cjfulford\Measurements;
 
+use Cjfulford\Measurements\Area\AbstractArea;
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
+
 enum Format
 {
     case ACRONYM;
@@ -10,22 +15,22 @@ enum Format
 
     function formatLength(AbstractLength $length, LengthUnit $unit, int $decimals): string
     {
-        $value  = number_format($length->getValue($unit), $decimals);
+        $value = number_format($length->getValue($unit), $decimals);
         $append = match ($this) {
             self::ACRONYM => $unit->acronym,
-            self::NAME    => $unit->name,
-            self::SYMBOL  => $unit->symbol,
+            self::NAME => $unit->name,
+            self::SYMBOL => $unit->symbol,
         };
         return trim($value . $append);
     }
 
     function formatArea(AbstractArea $area, AreaUnit $unit, int $decimals): string
     {
-        $value  = number_format($area->getValue($unit), $decimals);
+        $value = number_format($area->getValue($unit), $decimals);
         $append = match ($this) {
             self::ACRONYM => $unit->acronym,
-            self::NAME    => $unit->name,
-            self::SYMBOL  => $unit->symbol,
+            self::NAME => $unit->name,
+            self::SYMBOL => $unit->symbol,
         };
         return trim($value . $append);
     }

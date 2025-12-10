@@ -1,7 +1,7 @@
 <?php
 
-use Cjfulford\Measurements\AreaUnit;
-use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 final class AreaUnitTest extends TestCase
@@ -51,35 +51,35 @@ final class AreaUnitTest extends TestCase
     public function testCustomUnitCreation(): void
     {
         $lengthUnit1 = new LengthUnit(
-            id          : 20,
+            id: 20,
             baseUnitsPer: 40,
-            name        : 'test1',
-            pluralName  : 'test1s',
-            acronym     : 't1',
-            symbol      : 't1'
+            name: 'test1',
+            pluralName: 'test1s',
+            acronym: 't1',
+            symbol: 't1'
         );
         $lengthUnit2 = new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 41,
-            name        : 'test2',
-            pluralName  : 'test2s',
-            acronym     : 't2',
-            symbol      : 't2'
+            name: 'test2',
+            pluralName: 'test2s',
+            acronym: 't2',
+            symbol: 't2'
         );
         $lengthUnit3 = new LengthUnit(
-            id          : 22,
+            id: 22,
             baseUnitsPer: 42,
-            name        : 'test3',
-            pluralName  : 'test3s',
-            acronym     : 't3',
-            symbol      : 't3'
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
+            symbol: 't3'
         );
 
         $unit1 = new AreaUnit(
-            id                       : 20,
-            name                     : 'test1',
-            pluralName               : 'test1s',
-            acronym                  : 't1',
+            id: 20,
+            name: 'test1',
+            pluralName: 'test1s',
+            acronym: 't1',
             correspondingLengthUnitId: $lengthUnit1->id
         );
         $this->assertSame($unit1, AreaUnit::getById(20));
@@ -87,10 +87,10 @@ final class AreaUnitTest extends TestCase
         $this->assertSame($unit1, AreaUnit::getBySymbol('t1'));
 
         $unit2 = new AreaUnit(
-            id                       : 21,
-            name                     : 'test2',
-            pluralName               : 'test2s',
-            acronym                  : 't2',
+            id: 21,
+            name: 'test2',
+            pluralName: 'test2s',
+            acronym: 't2',
             correspondingLengthUnitId: $lengthUnit2->id
         );
         $this->assertSame($unit2, AreaUnit::getById(21));
@@ -100,42 +100,42 @@ final class AreaUnitTest extends TestCase
         // test that adding a duplicate in any way fails
         $this->expectException(InvalidArgumentException::class);
         new AreaUnit(
-            id                       : 20,
-            name                     : 'test3',
-            pluralName               : 'test3s',
-            acronym                  : 't3',
+            id: 20,
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
             correspondingLengthUnitId: $lengthUnit3->id
         );
         $this->expectException(InvalidArgumentException::class);
         new AreaUnit(
-            id                       : 23,
-            name                     : 'test1',
-            pluralName               : 'test3s',
-            acronym                  : 't3',
+            id: 23,
+            name: 'test1',
+            pluralName: 'test3s',
+            acronym: 't3',
             correspondingLengthUnitId: $lengthUnit3->id
         );
         $this->expectException(InvalidArgumentException::class);
         new AreaUnit(
-            id                       : 23,
-            name                     : 'test3',
-            pluralName               : 'test1s',
-            acronym                  : 't3',
+            id: 23,
+            name: 'test3',
+            pluralName: 'test1s',
+            acronym: 't3',
             correspondingLengthUnitId: $lengthUnit3->id
         );
         $this->expectException(InvalidArgumentException::class);
         new AreaUnit(
-            id                       : 23,
-            name                     : 'test3',
-            pluralName               : 'test3s',
-            acronym                  : 't1',
+            id: 23,
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't1',
             correspondingLengthUnitId: $lengthUnit3->id
         );
         $this->expectException(InvalidArgumentException::class);
         new AreaUnit(
-            id                       : 23,
-            name                     : 'test3',
-            pluralName               : 'test3s',
-            acronym                  : 't3',
+            id: 23,
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
             correspondingLengthUnitId: $lengthUnit1->id
         );
     }

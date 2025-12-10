@@ -1,21 +1,24 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Length;
 
+use Cjfulford\Measurements\Area\Area;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Exception;
 
 class Length extends AbstractLength
 {
     public function add(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
-        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value += $length->getValue($this->unit);
         return $this;
     }
 
     public function sub(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
-        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value -= $length->getValue($this->unit);
         return $this;
     }
@@ -50,7 +53,7 @@ class Length extends AbstractLength
     public function ceil(LengthUnit|int $unit): static
     {
         $this->value = ceil($this->getValue($unit));
-        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
+        $this->unit = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
@@ -63,7 +66,7 @@ class Length extends AbstractLength
     public function floor(LengthUnit|int $unit): static
     {
         $this->value = floor($this->getValue($unit));
-        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
+        $this->unit = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
@@ -77,27 +80,27 @@ class Length extends AbstractLength
     public function round(LengthUnit|int $unit, int $precision = 0): static
     {
         $this->value = round($this->getValue($unit), $precision);
-        $this->unit  = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
+        $this->unit = $unit instanceof LengthUnit ? $unit : LengthUnit::getById($unit);
         return $this;
     }
 
     public function modulo(AbstractLength|float $length, LengthUnit|int|null $unit = null): static
     {
-        $length      = $length instanceof AbstractLength ? $length : new static($length, $unit);
+        $length = $length instanceof AbstractLength ? $length : new static($length, $unit);
         $this->value = $this->value % $length->getValue($this->unit);
         return $this;
     }
 
     public function min(AbstractLength|float $min, LengthUnit|int|null $unit = null): static
     {
-        $min         = $min instanceof AbstractLength ? $min : new static($min, $unit);
+        $min = $min instanceof AbstractLength ? $min : new static($min, $unit);
         $this->value = min($this->value, $min->getValue($this->unit));
         return $this;
     }
 
     public function max(AbstractLength|float $max, LengthUnit|int|null $unit = null): static
     {
-        $max         = $max instanceof AbstractLength ? $max : new static($max, $unit);
+        $max = $max instanceof AbstractLength ? $max : new static($max, $unit);
         $this->value = max($this->value, $max->getValue($this->unit));
         return $this;
     }

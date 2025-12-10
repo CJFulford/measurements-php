@@ -1,6 +1,11 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Area;
+
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Length\LengthImmutable;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 
 class AreaImmutable extends AbstractArea
 {
@@ -28,7 +33,7 @@ class AreaImmutable extends AbstractArea
 
     public function divByLength(AbstractLength|float $length, LengthUnit|int|null $unit = null): LengthImmutable
     {
-        $length     = $length instanceof AbstractLength ? $length : new LengthImmutable($length, $unit);
+        $length = $length instanceof AbstractLength ? $length : new LengthImmutable($length, $unit);
         $lengthUnit = $this->unit->correspondingLengthUnit;
         return new LengthImmutable($this->value / $length->getValue($lengthUnit), $lengthUnit);
     }

@@ -1,7 +1,9 @@
 <?php
 
-use Cjfulford\Measurements\Area;
-use Cjfulford\Measurements\AreaUnit;
+use Cjfulford\Measurements\Area\Area;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 final class AreaTest extends TestCase
@@ -59,20 +61,20 @@ final class AreaTest extends TestCase
 
     public function testDivisionByLength(): void
     {
-        $area   = new Area(10, AreaUnit::SQUARE_METRE);
-        $length = new Cjfulford\Measurements\Length(5, Cjfulford\Measurements\LengthUnit::METRE);
+        $area = new Area(10, AreaUnit::SQUARE_METRE);
+        $length = new Length(5, LengthUnit::METRE);
         $length = $area->divByLength($length);
         $this->assertEquals(2, $length->metres());
 
         // now without a second instance
-        $area   = new Area(10, AreaUnit::SQUARE_METRE);
-        $length = $area->divByLength(5, Cjfulford\Measurements\LengthUnit::METRE);
+        $area = new Area(10, AreaUnit::SQUARE_METRE);
+        $length = $area->divByLength(5, LengthUnit::METRE);
         $this->assertEquals(2, $length->metres());
     }
 
     public function testDivisionByArea(): void
     {
-        $area  = new Area(10, AreaUnit::SQUARE_METRE);
+        $area = new Area(10, AreaUnit::SQUARE_METRE);
         $area2 = new Area(5, AreaUnit::SQUARE_METRE);
         $this->assertEquals(2, $area->divByArea($area2));
 
@@ -192,7 +194,7 @@ final class AreaTest extends TestCase
     {
         // case where the first unit is not needed
         $length = new Area(1.5, AreaUnit::SQUARE_FOOT);
-        $units  = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $units = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
         $this->assertEquals("1ft²,72.00in²", $length->multiFormat($units, 2));
     }
 
@@ -201,7 +203,7 @@ final class AreaTest extends TestCase
         // case where the first unit is not needed
         $length = new Area(1, AreaUnit::SQUARE_YARD);
         $length = $length->add(1, AreaUnit::SQUARE_INCH);
-        $units  = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $units = [AreaUnit::SQUARE_YARD, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
         $this->assertEquals("1yd²,1.00in²", $length->multiFormat($units, 2));
     }
 
@@ -210,7 +212,7 @@ final class AreaTest extends TestCase
         // case where the units are not in order
         $length = new Area(3, AreaUnit::SQUARE_YARD);
         $length = $length->add(1.5, AreaUnit::SQUARE_FOOT);
-        $units  = [AreaUnit::SQUARE_INCH, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_YARD];
+        $units = [AreaUnit::SQUARE_INCH, AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_YARD];
         $this->assertEquals("3yd²,1ft²,72.00in²", $length->multiFormat($units, 2));
     }
 
@@ -218,7 +220,7 @@ final class AreaTest extends TestCase
     {
         // case where the last unit is zero
         $length = new Area(10, AreaUnit::SQUARE_FOOT);
-        $units  = [AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
+        $units = [AreaUnit::SQUARE_FOOT, AreaUnit::SQUARE_INCH];
         $this->assertEquals("10ft²,0.00in²", $length->multiFormat($units, 2));
     }
 }

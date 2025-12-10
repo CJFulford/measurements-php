@@ -1,6 +1,6 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Unit;
 
 use InvalidArgumentException;
 
@@ -18,7 +18,8 @@ abstract class Unit
         public readonly string $pluralName,
         public readonly string $acronym,
         public readonly string $symbol,
-    ) {
+    )
+    {
         static::buildDefaultUnits();
 
         static::checkForUniqueness($this);
@@ -62,7 +63,7 @@ abstract class Unit
     final public static function getByAcronym(string $acronym): static
     {
         static::buildDefaultUnits();
-        $acronym     = trim($acronym);
+        $acronym = trim($acronym);
         $staticUnits = self::$units[static::class];
         foreach ($staticUnits as $unit) {
             if ($unit->acronym === $acronym) {
@@ -75,7 +76,7 @@ abstract class Unit
     final public static function getBySymbol(string $symbol): static
     {
         static::buildDefaultUnits();
-        $symbol      = trim($symbol);
+        $symbol = trim($symbol);
         $staticUnits = self::$units[static::class];
         foreach ($staticUnits as $unit) {
             if ($unit->symbol === $symbol) {

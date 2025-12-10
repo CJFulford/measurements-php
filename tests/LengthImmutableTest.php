@@ -1,7 +1,7 @@
 <?php
 
-use Cjfulford\Measurements\LengthImmutable;
-use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\Length\LengthImmutable;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 /*

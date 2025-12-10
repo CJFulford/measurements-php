@@ -1,7 +1,10 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Length;
 
+use Cjfulford\Measurements\Area\AreaImmutable;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Exception;
 
 class LengthImmutable extends AbstractLength

@@ -1,7 +1,9 @@
 <?php
 
-use Cjfulford\Measurements\AreaImmutable;
-use Cjfulford\Measurements\AreaUnit;
+use Cjfulford\Measurements\Area\AreaImmutable;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 /*
@@ -15,7 +17,7 @@ final class AreaImmutableTest extends TestCase
     {
         $area1 = new AreaImmutable(1, AreaUnit::SQUARE_METRE);
         $area2 = $area1->add(new AreaImmutable(1, AreaUnit::SQUARE_METRE));
-            $this->assertEquals(1, $area1->squareMetres());
+        $this->assertEquals(1, $area1->squareMetres());
         $this->assertEquals(2, $area2->squareMetres());
 
         // now without a second instance
@@ -58,15 +60,15 @@ final class AreaImmutableTest extends TestCase
 
     public function testDivisionByLength(): void
     {
-        $area   = new AreaImmutable(10, AreaUnit::SQUARE_METRE);
-        $length = new Cjfulford\Measurements\Length(5, Cjfulford\Measurements\LengthUnit::METRE);
+        $area = new AreaImmutable(10, AreaUnit::SQUARE_METRE);
+        $length = new Length(5, LengthUnit::METRE);
         $length = $area->divByLength($length);
         $this->assertEquals(10, $area->squareMetres());
         $this->assertEquals(2, $length->metres());
 
         // now without a second instance
-        $area2   = new AreaImmutable(10, AreaUnit::SQUARE_METRE);
-        $length2 = $area2->divByLength(5, Cjfulford\Measurements\LengthUnit::METRE);
+        $area2 = new AreaImmutable(10, AreaUnit::SQUARE_METRE);
+        $length2 = $area2->divByLength(5, LengthUnit::METRE);
         $this->assertEquals(10, $area2->squareMetres());
         $this->assertEquals(2, $length2->metres());
     }

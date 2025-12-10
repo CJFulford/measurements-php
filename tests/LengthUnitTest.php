@@ -1,6 +1,6 @@
 <?php
 
-use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 final class LengthUnitTest extends TestCase
@@ -50,24 +50,24 @@ final class LengthUnitTest extends TestCase
     public function testCustomUnitCreation(): void
     {
         $unit1 = new LengthUnit(
-            id          : 23,
+            id: 23,
             baseUnitsPer: 43,
-            name        : 'test4',
-            pluralName  : 'test4s',
-            acronym     : 't4',
-            symbol      : '!'
+            name: 'test4',
+            pluralName: 'test4s',
+            acronym: 't4',
+            symbol: '!'
         );
         $this->assertSame($unit1, LengthUnit::getById(23));
         $this->assertSame($unit1, LengthUnit::getByAcronym('t4'));
         $this->assertSame($unit1, LengthUnit::getBySymbol('!'));
 
         $unit2 = new LengthUnit(
-            id          : 24,
+            id: 24,
             baseUnitsPer: 44,
-            name        : 'test5',
-            pluralName  : 'test5s',
-            acronym     : 't5',
-            symbol      : '@'
+            name: 'test5',
+            pluralName: 'test5s',
+            acronym: 't5',
+            symbol: '@'
         );
         $this->assertSame($unit2, LengthUnit::getById(24));
         $this->assertSame($unit2, LengthUnit::getByAcronym('t5'));
@@ -76,57 +76,57 @@ final class LengthUnitTest extends TestCase
         // test that adding a duplicate in any way fails
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 20,
+            id: 20,
             baseUnitsPer: 21,
-            name        : 'test3',
-            pluralName  : 'test3s',
-            acronym     : 't3',
-            symbol      : 't3'
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
+            symbol: 't3'
         );
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 20,
-            name        : 'test3',
-            pluralName  : 'test3s',
-            acronym     : 't3',
-            symbol      : 't3'
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
+            symbol: 't3'
         );
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 21,
-            name        : 'test1',
-            pluralName  : 'test3s',
-            acronym     : 't3',
-            symbol      : 't3'
+            name: 'test1',
+            pluralName: 'test3s',
+            acronym: 't3',
+            symbol: 't3'
         );
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 21,
-            name        : 'test3',
-            pluralName  : 'test1s',
-            acronym     : 't3',
-            symbol      : 't3'
+            name: 'test3',
+            pluralName: 'test1s',
+            acronym: 't3',
+            symbol: 't3'
         );
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 21,
-            name        : 'test3',
-            pluralName  : 'test3s',
-            acronym     : 't1',
-            symbol      : 't3'
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't1',
+            symbol: 't3'
         );
         $this->expectException(InvalidArgumentException::class);
         new LengthUnit(
-            id          : 21,
+            id: 21,
             baseUnitsPer: 21,
-            name        : 'test3',
-            pluralName  : 'test3s',
-            acronym     : 't3',
-            symbol      : 't1'
+            name: 'test3',
+            pluralName: 'test3s',
+            acronym: 't3',
+            symbol: 't1'
         );
     }
 }

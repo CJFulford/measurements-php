@@ -1,13 +1,18 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Area;
 
 
+use Cjfulford\Measurements\AbstractMeasurement;
+use Cjfulford\Measurements\Format;
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Exception;
-
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 use function Cjfulford\Measurements\Helpers\floatsGreaterThan;
 use function Cjfulford\Measurements\Helpers\floatsLessThan;
+use const Cjfulford\Measurements\DEFAULT_PRECISION;
 
 require_once 'Helpers.php';
 
@@ -91,7 +96,8 @@ abstract class AbstractArea extends AbstractMeasurement
         self|float        $area,
         AreaUnit|int|null $unit = null,
         int               $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         $area = $area instanceof self ? $area : new static($area, $unit);
         return floatsEqual($this->value, $area->getValue($this->unit), $precision);
     }
@@ -100,7 +106,8 @@ abstract class AbstractArea extends AbstractMeasurement
         self|float        $area,
         AreaUnit|int|null $unit = null,
         int               $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return !$this->isEqualTo($area, $unit, $precision);
     }
 
@@ -115,7 +122,8 @@ abstract class AbstractArea extends AbstractMeasurement
         self|float        $area,
         AreaUnit|int|null $unit = null,
         int               $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return $area instanceof self
             ? $this->isLessThan($area) || $this->isEqualTo($area, precision: $precision)
             : $this->isLessThanOrEqualTo(new static($area, $unit));
@@ -132,7 +140,8 @@ abstract class AbstractArea extends AbstractMeasurement
         self|float        $area,
         AreaUnit|int|null $unit = null,
         int               $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return $area instanceof self
             ? $this->isGreaterThan($area) || $this->isEqualTo($area, precision: $precision)
             : $this->isGreaterThanOrEqualTo(new static($area, $unit));
@@ -156,7 +165,8 @@ abstract class AbstractArea extends AbstractMeasurement
         int    $decimals,
         Format $format = Format::ACRONYM,
         string $separator = ','
-    ): string {
+    ): string
+    {
         // Sort units so that the largest unit is first
         usort($units, function (AreaUnit|int $a, AreaUnit|int $b) {
             $a = $a instanceof AreaUnit ? $a : AreaUnit::getById($a);
@@ -164,18 +174,18 @@ abstract class AbstractArea extends AbstractMeasurement
             return $b->baseUnitsPer <=> $a->baseUnitsPer;
         });
 
-        $result    = [];
+        $result = [];
         $remaining = new AreaImmutable($this->value, $this->unit);
         foreach ($units as $i => $unit) {
             $isLastUnit = $i === count($units) - 1;
 
             if ($isLastUnit) {
-                $portion         = $remaining;
+                $portion = $remaining;
                 $portionDecimals = $decimals;
             } else {
-                $portion         = new AreaImmutable(floor($remaining->getValue($unit)), $unit);
+                $portion = new AreaImmutable(floor($remaining->getValue($unit)), $unit);
                 $portionDecimals = 0;
-                $remaining       = $remaining->sub($portion);
+                $remaining = $remaining->sub($portion);
 
                 if ($portion->isZero()) {
                     continue;

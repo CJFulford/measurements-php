@@ -1,12 +1,16 @@
 <?php
 
-namespace Cjfulford\Measurements;
+namespace Cjfulford\Measurements\Length;
 
+use Cjfulford\Measurements\AbstractMeasurement;
+use Cjfulford\Measurements\Area\AbstractArea;
+use Cjfulford\Measurements\Format;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Exception;
-
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 use function Cjfulford\Measurements\Helpers\floatsGreaterThan;
 use function Cjfulford\Measurements\Helpers\floatsLessThan;
+use const Cjfulford\Measurements\DEFAULT_PRECISION;
 
 require_once 'Helpers.php';
 
@@ -120,7 +124,8 @@ abstract class AbstractLength extends AbstractMeasurement
         self|float          $max,
         LengthUnit|int|null $minUnit = null,
         LengthUnit|int|null $maxUnit = null
-    ): static {
+    ): static
+    {
         return $this->max($min, $minUnit)->min($max, $maxUnit);
     }
 
@@ -128,7 +133,8 @@ abstract class AbstractLength extends AbstractMeasurement
         self|float          $length,
         LengthUnit|int|null $unit = null,
         int                 $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         $length = $length instanceof self ? $length : new static($length, $unit);
         return floatsEqual($this->value, $length->getValue($this->unit), $precision);
     }
@@ -137,7 +143,8 @@ abstract class AbstractLength extends AbstractMeasurement
         self|float          $length,
         LengthUnit|int|null $unit = null,
         int                 $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return !$this->isEqualTo($length, $unit, $precision);
     }
 
@@ -152,7 +159,8 @@ abstract class AbstractLength extends AbstractMeasurement
         self|float          $length,
         LengthUnit|int|null $unit = null,
         int                 $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return $length instanceof self
             ? $this->isLessThan($length) || $this->isEqualTo($length, precision: $precision)
             : $this->isLessThanOrEqualTo(new static($length, $unit));
@@ -169,7 +177,8 @@ abstract class AbstractLength extends AbstractMeasurement
         self|float          $length,
         LengthUnit|int|null $unit = null,
         int                 $precision = DEFAULT_PRECISION
-    ): bool {
+    ): bool
+    {
         return $length instanceof self
             ? $this->isGreaterThan($length) || $this->isEqualTo($length, precision: $precision)
             : $this->isGreaterThanOrEqualTo(new static($length, $unit));
@@ -197,7 +206,8 @@ abstract class AbstractLength extends AbstractMeasurement
         int    $decimals,
         Format $format = Format::SYMBOL,
         string $separator = ','
-    ): string {
+    ): string
+    {
         // Sort units so that the largest unit is first
         usort($units, function (LengthUnit|int $a, LengthUnit|int $b) {
             $a = $a instanceof LengthUnit ? $a : LengthUnit::getById($a);
@@ -205,18 +215,18 @@ abstract class AbstractLength extends AbstractMeasurement
             return $b->baseUnitsPer <=> $a->baseUnitsPer;
         });
 
-        $result    = [];
+        $result = [];
         $remaining = new LengthImmutable($this->value, $this->unit);
         foreach ($units as $i => $unit) {
             $isLastUnit = $i === count($units) - 1;
 
             if ($isLastUnit) {
-                $portion         = $remaining;
+                $portion = $remaining;
                 $portionDecimals = $decimals;
             } else {
-                $portion         = new LengthImmutable(floor($remaining->getValue($unit)), $unit);
+                $portion = new LengthImmutable(floor($remaining->getValue($unit)), $unit);
                 $portionDecimals = 0;
-                $remaining       = $remaining->sub($portion);
+                $remaining = $remaining->sub($portion);
 
                 if ($portion->isZero()) {
                     continue;
