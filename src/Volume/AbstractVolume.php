@@ -34,42 +34,42 @@ abstract class AbstractVolume extends AbstractMeasurement
         return $this->value * $this->unit->baseUnitsPer / $unit->baseUnitsPer;
     }
 
-    final public function kilometres(): float
+    final public function cubeKilometres(): float
     {
         return $this->getValue(VolumeUnit::CUBE_KILOMETRE);
     }
 
-    final public function metres(): float
+    final public function cubeMetres(): float
     {
         return $this->getValue(VolumeUnit::CUBE_METRE);
     }
 
-    final public function centimetres(): float
+    final public function cubeCentimetres(): float
     {
         return $this->getValue(VolumeUnit::CUBE_CENTIMETRE);
     }
 
-    final public function millimetres(): float
+    final public function cubeMillimetres(): float
     {
         return $this->getValue(VolumeUnit::CUBE_MILLIMETRE);
     }
 
-    final public function inches(): float
+    final public function cubeInches(): float
     {
         return $this->getValue(VolumeUnit::CUBE_INCH);
     }
 
-    final public function feet(): float
+    final public function cubeFeet(): float
     {
         return $this->getValue(VolumeUnit::CUBE_FOOT);
     }
 
-    final public function yards(): float
+    final public function cubeYards(): float
     {
         return $this->getValue(VolumeUnit::CUBE_YARD);
     }
 
-    final public function miles(): float
+    final public function cubeMiles(): float
     {
         return $this->getValue(VolumeUnit::CUBE_MILE);
     }
