@@ -1,7 +1,10 @@
 <?php
 
+namespace Unit;
+
 use Cjfulford\Measurements\Unit\AreaUnit;
 use Cjfulford\Measurements\Unit\LengthUnit;
+use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 
 final class AreaUnitTest extends TestCase

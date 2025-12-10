@@ -1,5 +1,7 @@
 <?php
 
+namespace Length;
+
 use Cjfulford\Measurements\Length\Length;
 use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;

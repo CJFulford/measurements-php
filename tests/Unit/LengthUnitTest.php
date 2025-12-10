@@ -1,5 +1,7 @@
 <?php
 
+namespace Unit;
+
 use Cjfulford\Measurements\Unit\LengthUnit;
 use PHPUnit\Framework\TestCase;
 

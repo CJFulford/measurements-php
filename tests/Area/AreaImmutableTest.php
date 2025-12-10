@@ -1,5 +1,7 @@
 <?php
 
+namespace Area;
+
 use Cjfulford\Measurements\Area\AreaImmutable;
 use Cjfulford\Measurements\Length\Length;
 use Cjfulford\Measurements\Unit\AreaUnit;
