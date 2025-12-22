@@ -2,6 +2,10 @@
 
 namespace Volume;
 
+use Cjfulford\Measurements\Area\Area;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Cjfulford\Measurements\Unit\VolumeUnit;
 use Cjfulford\Measurements\Volume\VolumeImmutable;
 use PHPUnit\Framework\TestCase;
@@ -58,18 +62,41 @@ final class VolumeImmutableTest extends TestCase
         $this->assertEquals(2, $area2->cubeMetres());
     }
 
-//    public function testDivisionByLength(): void
-//    {
-//        $area = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
-//        $length = new Length(5, LengthUnit::METRE);
-//        $length = $area->divByLength($length);
-//        $this->assertEquals(10, $area->cubeMetres());
-//        $this->assertEquals(2, $length->metres());
-//
-//        // now without a second instance
-//        $area2 = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
-//        $length2 = $area2->divByLength(5, LengthUnit::METRE);
-//        $this->assertEquals(10, $area2->cubeMetres());
-//        $this->assertEquals(2, $length2->metres());
-//    }
+    public function testDivisionByLength(): void
+    {
+        $volume = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $length = new Length(5, LengthUnit::METRE);
+        $area = $volume->divByLength($length);
+        $this->assertEquals(10, $volume->cubeMetres());
+        $this->assertEquals(2, $area->squareMetres());
+
+        // now without a second instance
+        $volume2 = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $area2 = $volume2->divByLength(5, LengthUnit::METRE);
+        $this->assertEquals(10, $volume2->cubeMetres());
+        $this->assertEquals(2, $area2->squareMetres());
+    }
+
+    public function testDivisionByArea(): void
+    {
+        $volume = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $area = new Area(5, AreaUnit::SQUARE_METRE);
+        $length = $volume->divByArea($area);
+        $this->assertEquals(2, $length->metres());
+
+        // now without a second instance
+        $volume = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $length = $volume->divByArea(5, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(2, $length->metres());
+    }
+
+    public function testDivisionByVolume(): void
+    {
+        $volume = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $this->assertEquals(2, $volume->divByVolume(new VolumeImmutable(5, VolumeUnit::CUBE_METRE)));
+
+        // now without a second instance
+        $volume = new VolumeImmutable(10, VolumeUnit::CUBE_METRE);
+        $this->assertEquals(2, $volume->divByVolume(5, VolumeUnit::CUBE_METRE));
+    }
 }

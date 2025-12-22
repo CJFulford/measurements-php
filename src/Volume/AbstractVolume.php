@@ -3,7 +3,11 @@
 namespace Cjfulford\Measurements\Volume;
 
 use Cjfulford\Measurements\AbstractMeasurement;
+use Cjfulford\Measurements\Area\AbstractArea;
 use Cjfulford\Measurements\Format;
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Cjfulford\Measurements\Unit\VolumeUnit;
 use Exception;
 use function Cjfulford\Measurements\Helpers\floatsEqual;
@@ -77,6 +81,10 @@ abstract class AbstractVolume extends AbstractMeasurement
     abstract public function add(self|float $volume, VolumeUnit|int|null $unit = null): static;
 
     abstract public function sub(self|float $volume, VolumeUnit|int|null $unit = null): static;
+
+    abstract public function divByLength(AbstractLength|float $length, LengthUnit|int|null $unit = null): AbstractArea;
+
+    abstract public function divByArea(AbstractArea|float $area, AreaUnit|int|null $unit = null): AbstractLength;
 
     final public function divByVolume(self|float $volume, VolumeUnit|int|null $unit = null): float
     {

@@ -2,6 +2,12 @@
 
 namespace Cjfulford\Measurements\Volume;
 
+use Cjfulford\Measurements\Area\AbstractArea;
+use Cjfulford\Measurements\Area\Area;
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Cjfulford\Measurements\Unit\VolumeUnit;
 use Exception;
 
@@ -31,6 +37,18 @@ class Volume extends AbstractVolume
     {
         $this->value /= $number;
         return $this;
+    }
+
+    public function divByLength(float|AbstractLength $length, LengthUnit|int|null $unit = null): AbstractArea
+    {
+        $length = $length instanceof AbstractLength ? $length : new Length($length, $unit);
+        return new Area($this->cubeMetres() / $length->metres(), AreaUnit::SQUARE_METRE);
+    }
+
+    public function divByArea(float|AbstractArea $area, AreaUnit|int|null $unit = null): AbstractLength
+    {
+        $area = $area instanceof AbstractArea ? $area : new Area($area, $unit);
+        return new Length($this->cubeMetres() / $area->squareMetres(), LengthUnit::METRE);
     }
 
     /**

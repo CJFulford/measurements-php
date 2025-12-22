@@ -2,6 +2,10 @@
 
 namespace Volume;
 
+use Cjfulford\Measurements\Area\Area;
+use Cjfulford\Measurements\Length\Length;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Cjfulford\Measurements\Unit\VolumeUnit;
 use Cjfulford\Measurements\Volume\Volume;
 use PHPUnit\Framework\TestCase;
@@ -59,29 +63,41 @@ final class VolumeTest extends TestCase
         $this->assertEquals(2, $v->cubeMetres());
     }
 
-//    public function testDivisionByLength(): void
-//    {
-//        $area = new Area(10, AreaUnit::SQUARE_METRE);
-//        $length = new Length(5, LengthUnit::METRE);
-//        $length = $area->divByLength($length);
-//        $this->assertEquals(2, $length->metres());
-//
-//        // now without a second instance
-//        $area = new Area(10, AreaUnit::SQUARE_METRE);
-//        $length = $area->divByLength(5, LengthUnit::METRE);
-//        $this->assertEquals(2, $length->metres());
-//    }
-//
-//    public function testDivisionByArea(): void
-//    {
-//        $area = new Area(10, AreaUnit::SQUARE_METRE);
-//        $area2 = new Area(5, AreaUnit::SQUARE_METRE);
-//        $this->assertEquals(2, $area->divByArea($area2));
-//
-//        // now without a second instance
-//        $area = new Area(10, AreaUnit::SQUARE_METRE);
-//        $this->assertEquals(2, $area->divByArea(5, AreaUnit::SQUARE_METRE));
-//    }
+    public function testDivisionByLength(): void
+    {
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $length = new Length(5, LengthUnit::METRE);
+        $area = $volume->divByLength($length);
+        $this->assertEquals(2, $area->squareMetres());
+
+        // now without a second instance
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $area = $volume->divByLength(5, LengthUnit::METRE);
+        $this->assertEquals(2, $area->squareMetres());
+    }
+
+    public function testDivisionByArea(): void
+    {
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $area = new Area(5, AreaUnit::SQUARE_METRE);
+        $length = $volume->divByArea($area);
+        $this->assertEquals(2, $length->metres());
+
+        // now without a second instance
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $length = $volume->divByArea(5, AreaUnit::SQUARE_METRE);
+        $this->assertEquals(2, $length->metres());
+    }
+
+    public function testDivisionByVolume(): void
+    {
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $this->assertEquals(2, $volume->divByVolume(new Volume(5, VolumeUnit::CUBE_METRE)));
+
+        // now without a second instance
+        $volume = new Volume(10, VolumeUnit::CUBE_METRE);
+        $this->assertEquals(2, $volume->divByVolume(5, VolumeUnit::CUBE_METRE));
+    }
 
     public function testEquality(): void
     {

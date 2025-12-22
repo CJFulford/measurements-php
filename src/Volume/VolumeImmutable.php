@@ -2,6 +2,12 @@
 
 namespace Cjfulford\Measurements\Volume;
 
+use Cjfulford\Measurements\Area\AbstractArea;
+use Cjfulford\Measurements\Area\AreaImmutable;
+use Cjfulford\Measurements\Length\AbstractLength;
+use Cjfulford\Measurements\Length\LengthImmutable;
+use Cjfulford\Measurements\Unit\AreaUnit;
+use Cjfulford\Measurements\Unit\LengthUnit;
 use Cjfulford\Measurements\Unit\VolumeUnit;
 use Exception;
 
@@ -27,6 +33,18 @@ class VolumeImmutable extends AbstractVolume
     public function divByNumber(float $number): static
     {
         return new static($this->value / $number, $this->unit);
+    }
+
+    public function divByLength(float|AbstractLength $length, LengthUnit|int|null $unit = null): AbstractArea
+    {
+        $length = $length instanceof AbstractLength ? $length : new LengthImmutable($length, $unit);
+        return new AreaImmutable($this->cubeMetres() / $length->metres(), AreaUnit::SQUARE_METRE);
+    }
+
+    public function divByArea(float|AbstractArea $area, AreaUnit|int|null $unit = null): AbstractLength
+    {
+        $area = $area instanceof AbstractArea ? $area : new AreaImmutable($area, $unit);
+        return new LengthImmutable($this->cubeMetres() / $area->squareMetres(), LengthUnit::METRE);
     }
 
     /**
