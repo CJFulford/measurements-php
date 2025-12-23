@@ -63,57 +63,57 @@ class VolumeUnit extends Unit
 
         new self(
             id: self::CUBE_KILOMETRE,
-            name: 'cube kilometre',
-            pluralName: 'cube kilometres',
+            name: 'cubic kilometre',
+            pluralName: 'cubic kilometres',
             acronym: 'km³',
             correspondingLengthUnitId: LengthUnit::KILOMETRE
         );
         new self(
             id: self::CUBE_METRE,
-            name: 'cube metre',
-            pluralName: 'cube metres',
+            name: 'cubic metre',
+            pluralName: 'cubic metres',
             acronym: 'm³',
             correspondingLengthUnitId: LengthUnit::METRE
         );
         new self(
             id: self::CUBE_CENTIMETRE,
-            name: 'cube centimetre',
-            pluralName: 'cube centimetres',
+            name: 'cubic centimetre',
+            pluralName: 'cubic centimetres',
             acronym: 'cm³',
             correspondingLengthUnitId: LengthUnit::CENTIMETRE
         );
         new self(
             id: self::CUBE_MILLIMETRE,
-            name: 'cube millimetre',
-            pluralName: 'cube millimetres',
+            name: 'cubic millimetre',
+            pluralName: 'cubic millimetres',
             acronym: 'mm³',
             correspondingLengthUnitId: LengthUnit::MILLIMETRE
         );
         new self(
             id: self::CUBE_INCH,
-            name: 'cube inch',
-            pluralName: 'cube inches',
+            name: 'cubic inch',
+            pluralName: 'cubic inches',
             acronym: 'in³',
             correspondingLengthUnitId: LengthUnit::INCH
         );
         new self(
             id: self::CUBE_FOOT,
-            name: 'cube foot',
-            pluralName: 'cube feet',
+            name: 'cubic foot',
+            pluralName: 'cubic feet',
             acronym: 'ft³',
             correspondingLengthUnitId: LengthUnit::FOOT
         );
         new self(
             id: self::CUBE_YARD,
-            name: 'cube yard',
-            pluralName: 'cube yards',
+            name: 'cubic yard',
+            pluralName: 'cubic yards',
             acronym: 'yd³',
             correspondingLengthUnitId: LengthUnit::YARD
         );
         new self(
             id: self::CUBE_MILE,
-            name: 'cube mile',
-            pluralName: 'cube miles',
+            name: 'cubic mile',
+            pluralName: 'cubic miles',
             acronym: 'mi³',
             correspondingLengthUnitId: LengthUnit::MILE
         );
