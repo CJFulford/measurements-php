@@ -1,6 +1,6 @@
 <?php
 
-namespace Cjfulford\Measurements\Unit;
+namespace Cjfulford\Measurements;
 
 use InvalidArgumentException;
 

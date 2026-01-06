@@ -1,54 +1,43 @@
 <?php
 
-namespace Cjfulford\Measurements\Volume;
+namespace Cjfulford\Measurements;
 
-use Cjfulford\Measurements\Area\AbstractArea;
-use Cjfulford\Measurements\Area\Area;
-use Cjfulford\Measurements\Length\AbstractLength;
-use Cjfulford\Measurements\Length\Length;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Unit\VolumeUnit;
 use Exception;
 
-class Volume extends AbstractVolume
+class VolumeImmutable extends AbstractVolume
 {
     public function add(AbstractVolume|float $volume, VolumeUnit|int|null $unit = null): static
     {
         $volume = $volume instanceof AbstractVolume ? $volume : new static($volume, $unit);
-        $this->value += $volume->getValue($this->unit);
-        return $this;
+        return new static($this->value + $volume->getValue($this->unit), $this->unit);
     }
 
     public function sub(AbstractVolume|float $volume, VolumeUnit|int|null $unit = null): static
     {
         $volume = $volume instanceof AbstractVolume ? $volume : new static($volume, $unit);
-        $this->value -= $volume->getValue($this->unit);
-        return $this;
+        return new static($this->value - $volume->getValue($this->unit), $this->unit);
     }
 
     public function mulByNumber(float $number): static
     {
-        $this->value *= $number;
-        return $this;
+        return new static($this->value * $number, $this->unit);
     }
 
     public function divByNumber(float $number): static
     {
-        $this->value /= $number;
-        return $this;
+        return new static($this->value / $number, $this->unit);
     }
 
     public function divByLength(float|AbstractLength $length, LengthUnit|int|null $unit = null): AbstractArea
     {
-        $length = $length instanceof AbstractLength ? $length : new Length($length, $unit);
-        return new Area($this->cubeMetres() / $length->metres(), AreaUnit::SQUARE_METRE);
+        $length = $length instanceof AbstractLength ? $length : new LengthImmutable($length, $unit);
+        return new AreaImmutable($this->cubeMetres() / $length->metres(), AreaUnit::SQUARE_METRE);
     }
 
     public function divByArea(float|AbstractArea $area, AreaUnit|int|null $unit = null): AbstractLength
     {
-        $area = $area instanceof AbstractArea ? $area : new Area($area, $unit);
-        return new Length($this->cubeMetres() / $area->squareMetres(), LengthUnit::METRE);
+        $area = $area instanceof AbstractArea ? $area : new AreaImmutable($area, $unit);
+        return new LengthImmutable($this->cubeMetres() / $area->squareMetres(), LengthUnit::METRE);
     }
 
     /**
@@ -59,9 +48,7 @@ class Volume extends AbstractVolume
      */
     public function ceil(VolumeUnit|int $unit): static
     {
-        $this->value = ceil($this->getValue($unit));
-        $this->unit = $unit instanceof VolumeUnit ? $unit : VolumeUnit::getById($unit);
-        return $this;
+        return new static(ceil($this->getValue($unit)), $unit);
     }
 
     /**
@@ -72,9 +59,7 @@ class Volume extends AbstractVolume
      */
     public function floor(VolumeUnit|int $unit): static
     {
-        $this->value = floor($this->getValue($unit));
-        $this->unit = $unit instanceof VolumeUnit ? $unit : VolumeUnit::getById($unit);
-        return $this;
+        return new static(floor($this->getValue($unit)), $unit);
     }
 
     /**
@@ -86,34 +71,29 @@ class Volume extends AbstractVolume
      */
     public function round(VolumeUnit|int $unit, int $precision = 0): static
     {
-        $this->value = round($this->getValue($unit), $precision);
-        $this->unit = $unit instanceof VolumeUnit ? $unit : VolumeUnit::getById($unit);
-        return $this;
+        return new static(round($this->getValue($unit), $precision), $unit);
     }
 
     public function modulo(AbstractVolume|float $volume, VolumeUnit|int|null $unit = null): static
     {
         $volume = $volume instanceof AbstractVolume ? $volume : new static($volume, $unit);
-        $this->value = $this->value % $volume->getValue($this->unit);
-        return $this;
+        return new static($this->value % $volume->getValue($this->unit), $this->unit);
     }
 
     public function min(AbstractVolume|float $min, VolumeUnit|int|null $unit = null): static
     {
         $min = $min instanceof AbstractVolume ? $min : new static($min, $unit);
-        $this->value = min($this->value, $min->getValue($this->unit));
-        return $this;
+        return new static(min($this->value, $min->getValue($this->unit)), $this->unit);
     }
 
     public function max(AbstractVolume|float $max, VolumeUnit|int|null $unit = null): static
     {
         $max = $max instanceof AbstractVolume ? $max : new static($max, $unit);
-        $this->value = max($this->value, $max->getValue($this->unit));
-        return $this;
+        return new static(max($this->value, $max->getValue($this->unit)), $this->unit);
     }
 
     public static function zero(): static
     {
-        return new self(0, VolumeUnit::CUBE_METRE);
+        return new static(0, VolumeUnit::CUBE_METRE);
     }
 }

@@ -1,20 +1,13 @@
 <?php
 
-namespace Cjfulford\Measurements\Length;
+namespace Cjfulford\Measurements;
 
-use Cjfulford\Measurements\AbstractMeasurement;
-use Cjfulford\Measurements\Area\AbstractArea;
-use Cjfulford\Measurements\Format;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Volume\AbstractVolume;
 use Exception;
 use function Cjfulford\Measurements\Helpers\floatsEqual;
 use function Cjfulford\Measurements\Helpers\floatsGreaterThan;
 use function Cjfulford\Measurements\Helpers\floatsLessThan;
-use const Cjfulford\Measurements\DEFAULT_PRECISION;
 
-require_once __DIR__ . '/../Helpers.php';
+require_once __DIR__ . '/Helpers.php';
 
 abstract class AbstractLength extends AbstractMeasurement
 {

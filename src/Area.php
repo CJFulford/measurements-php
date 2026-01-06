@@ -1,14 +1,6 @@
 <?php
 
-namespace Cjfulford\Measurements\Area;
-
-use Cjfulford\Measurements\Length\AbstractLength;
-use Cjfulford\Measurements\Length\Length;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Unit\VolumeUnit;
-use Cjfulford\Measurements\Volume\AbstractVolume;
-use Cjfulford\Measurements\Volume\Volume;
+namespace Cjfulford\Measurements;
 
 class Area extends AbstractArea
 {

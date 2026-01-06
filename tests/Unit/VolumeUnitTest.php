@@ -2,8 +2,8 @@
 
 namespace Unit;
 
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Unit\VolumeUnit;
+use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\VolumeUnit;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

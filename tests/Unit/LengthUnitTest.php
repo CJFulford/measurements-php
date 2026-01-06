@@ -2,7 +2,7 @@
 
 namespace Unit;
 
-use Cjfulford\Measurements\Unit\LengthUnit;
+use Cjfulford\Measurements\LengthUnit;
 use InvalidArgumentException;
 use PHPUnit\Framework\TestCase;
 

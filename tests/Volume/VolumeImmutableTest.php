@@ -2,12 +2,12 @@
 
 namespace Volume;
 
-use Cjfulford\Measurements\Area\Area;
-use Cjfulford\Measurements\Length\Length;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Unit\VolumeUnit;
-use Cjfulford\Measurements\Volume\VolumeImmutable;
+use Cjfulford\Measurements\Area;
+use Cjfulford\Measurements\AreaUnit;
+use Cjfulford\Measurements\Length;
+use Cjfulford\Measurements\LengthUnit;
+use Cjfulford\Measurements\VolumeImmutable;
+use Cjfulford\Measurements\VolumeUnit;
 use PHPUnit\Framework\TestCase;
 
 /*

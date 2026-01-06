@@ -2,10 +2,10 @@
 
 namespace Length;
 
-use Cjfulford\Measurements\Area\Area;
-use Cjfulford\Measurements\Length\LengthImmutable;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
+use Cjfulford\Measurements\Area;
+use Cjfulford\Measurements\AreaUnit;
+use Cjfulford\Measurements\LengthImmutable;
+use Cjfulford\Measurements\LengthUnit;
 use PHPUnit\Framework\TestCase;
 
 /*

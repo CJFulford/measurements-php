@@ -2,13 +2,6 @@
 
 namespace Cjfulford\Measurements;
 
-use Cjfulford\Measurements\Area\AbstractArea;
-use Cjfulford\Measurements\Length\AbstractLength;
-use Cjfulford\Measurements\Unit\AreaUnit;
-use Cjfulford\Measurements\Unit\LengthUnit;
-use Cjfulford\Measurements\Unit\VolumeUnit;
-use Cjfulford\Measurements\Volume\AbstractVolume;
-
 enum Format
 {
     case ACRONYM;

@@ -1,19 +1,19 @@
 <?php
 
-namespace Cjfulford\Measurements\Unit;
+namespace Cjfulford\Measurements;
 
 use InvalidArgumentException;
 
-class AreaUnit extends Unit
+class VolumeUnit extends Unit
 {
-    public const SQUARE_METRE = 1;
-    public const SQUARE_KILOMETRE = 2;
-    public const SQUARE_CENTIMETRE = 3;
-    public const SQUARE_MILLIMETRE = 4;
-    public const SQUARE_INCH = 5;
-    public const SQUARE_FOOT = 6;
-    public const SQUARE_YARD = 7;
-    public const SQUARE_MILE = 8;
+    public const CUBE_METRE = 1;
+    public const CUBE_KILOMETRE = 2;
+    public const CUBE_CENTIMETRE = 3;
+    public const CUBE_MILLIMETRE = 4;
+    public const CUBE_INCH = 5;
+    public const CUBE_FOOT = 6;
+    public const CUBE_YARD = 7;
+    public const CUBE_MILE = 8;
 
     public readonly LengthUnit $correspondingLengthUnit;
 
@@ -28,7 +28,7 @@ class AreaUnit extends Unit
         $this->correspondingLengthUnit = LengthUnit::getById($correspondingLengthUnitId);
         parent::__construct(
             id: $id,
-            baseUnitsPer: $this->correspondingLengthUnit->baseUnitsPer ** 2,
+            baseUnitsPer: $this->correspondingLengthUnit->baseUnitsPer ** 3,
             name: $name,
             pluralName: $pluralName,
             acronym: $acronym,
@@ -62,59 +62,59 @@ class AreaUnit extends Unit
         self::$units[static::class] = [];
 
         new self(
-            id: self::SQUARE_KILOMETRE,
-            name: 'square kilometre',
-            pluralName: 'square kilometres',
-            acronym: 'km²',
+            id: self::CUBE_KILOMETRE,
+            name: 'cubic kilometre',
+            pluralName: 'cubic kilometres',
+            acronym: 'km³',
             correspondingLengthUnitId: LengthUnit::KILOMETRE
         );
         new self(
-            id: self::SQUARE_METRE,
-            name: 'square metre',
-            pluralName: 'square metres',
-            acronym: 'm²',
+            id: self::CUBE_METRE,
+            name: 'cubic metre',
+            pluralName: 'cubic metres',
+            acronym: 'm³',
             correspondingLengthUnitId: LengthUnit::METRE
         );
         new self(
-            id: self::SQUARE_CENTIMETRE,
-            name: 'square centimetre',
-            pluralName: 'square centimetres',
-            acronym: 'cm²',
+            id: self::CUBE_CENTIMETRE,
+            name: 'cubic centimetre',
+            pluralName: 'cubic centimetres',
+            acronym: 'cm³',
             correspondingLengthUnitId: LengthUnit::CENTIMETRE
         );
         new self(
-            id: self::SQUARE_MILLIMETRE,
-            name: 'square millimetre',
-            pluralName: 'square millimetres',
-            acronym: 'mm²',
+            id: self::CUBE_MILLIMETRE,
+            name: 'cubic millimetre',
+            pluralName: 'cubic millimetres',
+            acronym: 'mm³',
             correspondingLengthUnitId: LengthUnit::MILLIMETRE
         );
         new self(
-            id: self::SQUARE_INCH,
-            name: 'square inch',
-            pluralName: 'square inches',
-            acronym: 'in²',
+            id: self::CUBE_INCH,
+            name: 'cubic inch',
+            pluralName: 'cubic inches',
+            acronym: 'in³',
             correspondingLengthUnitId: LengthUnit::INCH
         );
         new self(
-            id: self::SQUARE_FOOT,
-            name: 'square foot',
-            pluralName: 'square feet',
-            acronym: 'ft²',
+            id: self::CUBE_FOOT,
+            name: 'cubic foot',
+            pluralName: 'cubic feet',
+            acronym: 'ft³',
             correspondingLengthUnitId: LengthUnit::FOOT
         );
         new self(
-            id: self::SQUARE_YARD,
-            name: 'square yard',
-            pluralName: 'square yards',
-            acronym: 'yd²',
+            id: self::CUBE_YARD,
+            name: 'cubic yard',
+            pluralName: 'cubic yards',
+            acronym: 'yd³',
             correspondingLengthUnitId: LengthUnit::YARD
         );
         new self(
-            id: self::SQUARE_MILE,
-            name: 'square mile',
-            pluralName: 'square miles',
-            acronym: 'mi²',
+            id: self::CUBE_MILE,
+            name: 'cubic mile',
+            pluralName: 'cubic miles',
+            acronym: 'mi³',
             correspondingLengthUnitId: LengthUnit::MILE
         );
     }
